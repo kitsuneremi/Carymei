@@ -1,0 +1,44 @@
+:root{
+    --lighttext: black;
+    --lightbackground: white;
+    --darktext: white;  
+    --darkbackground: black;
+}
+.light{
+    .text {
+        color: var(--lighttext);
+        margin: 0;
+    }
+    .tooltip{
+        background: var(--lightbackground);
+        color: var(--lighttext);
+    }
+    .container{
+        background: var(--lightbackground);
+    }
+    .body-text{
+        font-size: 15px;
+        color: var(--lighttext);
+        margin: 0;
+    }
+}
+
+
+.dark{
+    .text {
+        color: var(--darktext);
+        margin: 0;
+    }
+    .tooltip{
+        background: var(--darkbackground);
+        color: var(--darktext);
+    }
+    .container{
+        background: var(--darkbackground);
+    }
+    .body-text{
+        font-size: 15px;
+        color: var(--darktext);
+        margin: 0;
+    }
+}

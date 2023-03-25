@@ -1,0 +1,29 @@
+.commentRow{
+    width: 100%;
+    height: fit-content;
+    margin: 4px 0;
+}
+
+.commentText{
+    text-align: left;
+    margin-bottom: 0;
+
+}
+
+.commentChannelName{
+    margin-bottom: 0;
+    font-size: 1.2em;
+    font-weight: 625;
+}
+
+.inputTextField{
+    width: 100%;
+    max-width: inherit;
+    height: fit-content;
+}
+
+.avatar{
+    width: 80%;
+    height: 50%;
+    margin: 15px 0;
+}

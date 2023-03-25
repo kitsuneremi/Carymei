@@ -1,0 +1,104 @@
+.videoTitle{
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.videoDetails{
+    font-size: 12px;
+    color: #969696;
+    &:hover{
+        color: #0f0f0f;
+    }
+}
+
+.cardBody{
+    padding: 0.3em;
+    padding: 5px;
+}
+
+.card{
+    padding: 0;
+}
+
+.icon{
+    border-radius: 2em;
+    width: 90%;
+    margin-top: 0.8em;
+    margin-right: 0.8em;
+}
+
+.thumbnail{
+    width: fit-content;
+    max-height: 160px;
+}
+
+.box{
+    width: 20%;
+    display: flex;
+    padding: 5px 10px;
+}
+
+/* 1601 - 1920*/
+@media screen and (min-width: 1601px) and (max-width: 120em){
+    .box{
+        width: 20%;
+        display: flex;
+        padding: 5px 10px;
+    }
+}
+
+/* 1301 - 1600 */
+@media screen and (min-width: 1301px) and (max-width: 1600px){
+    .box{
+        width: 25%;
+        display: flex;
+        padding: 5px 10px;
+    }
+}
+/* 1101-1300 */
+@media screen and (min-width: 1101px) and (max-width: 1300px){
+    .box{
+        width: 25%;
+        display: flex;
+        padding: 5px 10px;
+    }
+}
+
+/* 926-1100 */
+@media screen and (min-width: 926px) and (max-width: 1100px){
+    .box{
+        width: 25%;
+        display: flex;
+        padding: 5px 10px;
+    }
+}
+
+/*651-825*/
+@media screen and (min-width: 651px) and (max-width: 925px){
+    .box{
+        width: 33.3%;
+        display: flex;
+        padding: 5px 10px;
+    }
+    .thumbnail{
+        width: fit-content;
+        height: 60%;
+    }
+}
+/* 451 -> 650*/
+@media screen and (min-width: 451px) and (max-width: 650px){
+    .box{
+        width: 50%;
+        display: flex;
+        padding: 5px 10px;
+    }
+
+    .thumbnail{
+        width: fit-content;
+        height: 100px;
+    }
+}
+/*không hỗ trợ*/
+@media screen and (max-width: 450px){
+    
+}

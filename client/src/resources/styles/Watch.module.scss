@@ -1,0 +1,225 @@
+:root {
+    /* chỗ này để viết biến css */
+    --test: 0
+}
+
+.mainContent {
+    width: inherit;
+    top: 80px;
+    height: fit-content;
+    padding: 5% 9% 0;
+}
+
+.belowContent {
+    width: inherit;
+    height: fit-content;
+    padding: 0 9%;
+}
+
+
+
+.videoPlayer {
+    position: absolute;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.subSidebarTop {
+    width: 100%;
+    height: fit-content;
+    padding: 2% 0;
+    border: 1px solid gray;
+    border-radius: 1.5em;
+    z-index: 1 !important;
+}
+
+.sidebarListItemCol1 {
+    width: inherit;
+    height: 50px;
+}
+
+.sidebarListImg {
+    width: 100%;
+}
+
+.sidebarListBox {
+    padding-bottom: 5px;
+}
+
+.sidebarListBox {
+    vertical-align: center;
+}
+
+.sidebarList {
+    height: 93%;
+    overflow-y: scroll;
+
+}
+
+.belowContent {
+    height: fit-content;
+    background-color: aqua;
+    padding-top: 3%;
+}
+
+.belowVideoButton {
+    width: 6em;
+    height: 2em;
+
+    .share {
+        margin-left: 5px;
+        color: #0f0f0f;
+        background-color: #e5e5e5;
+        padding: 1% 2%;
+        text-decoration: none;
+        border-radius: 1.5em;
+
+    }
+
+    .save {
+        margin-left: 5px;
+        color: #0f0f0f;
+        background-color: #e5e5e5;
+        padding: 1% 2%;
+        text-decoration: none;
+        border-radius: 1.5em;
+    }
+
+    .createShort {
+        margin-left: 5px;
+        color: #0f0f0f;
+        background-color: #e5e5e5;
+        padding: 1% 2%;
+        text-decoration: none;
+        border-radius: 1.5em;
+    }
+}
+
+.subButton {
+    padding: 2%;
+    width: 6em;
+    height: 2em;
+
+    .sub {
+        width: inherit;
+        height: inherit;
+        color: #ffffff;
+        background-color: #272727;
+        text-decoration: none;
+        text-align: center;
+        border-radius: 1.5em;
+        line-height: 2em
+    }
+
+    .unsub {
+        width: inherit;
+        height: inherit;
+        color: #0f0f0f;
+        background-color: #e5e5e5;
+        text-decoration: none;
+        text-align: center;
+        border-radius: 1.5em;
+        line-height: 2em
+    }
+}
+
+.likeButtonGroup {
+    width: 6em;
+    height: 2.5em;
+    background-color: #e5e5e5;
+
+    .likeButton {
+        padding: 0 12px;
+        background-color: #e5e5e5;
+        border: 0;
+        color: #0f0f0f;
+    }
+
+    .dislikeButton {
+        padding: 0 12px;
+        background-color: #e5e5e5;
+        border: 0;
+        color: #0f0f0f;
+    }
+}
+
+.videoDescription {
+    text-align: left;
+    background: #e5e5e5;
+    color: #0f0f0f;
+    border-radius: 1em;
+    padding: 8px;
+    margin-top: 8px;
+}
+
+.true {
+    display: block;
+}
+
+.false {
+    display: none;
+}
+
+::-webkit-scrollbar {
+    display: none;
+}
+
+h5 {
+    text-align: left;
+}
+
+.sidebarListHeaderBox {
+    padding: 3% 0;
+}
+
+.dark {
+    // background-color: black;
+    color: white;
+}
+
+.light {
+    // background-color: white;
+    color: black;
+}
+
+.listVideoDeeper {
+    z-index: 0;
+}
+
+.material-symbols-outlined {
+    fill: 1;
+    font-weight: 100;
+    font-optical-sizing: 20px;
+}
+
+.left-control{
+    position: relative;
+}
+
+.control{
+    position: absolute;
+    width: 100%;
+    bottom: 0;
+    display: flex;
+    justify-content: space-between;
+    z-index: 100;
+    opacity: 0;
+    transition: opacity 175ms ease-in-out;
+}
+
+
+.video-box {
+    position: relative;
+    padding-bottom: 56.25%;
+    .video-player{
+        position: absolute;
+        width: 100%;
+        height: 100%;
+    }
+}
+
+.video-box:hover .control{
+    opacity: 1;
+}
+
