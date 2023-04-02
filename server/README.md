@@ -7,19 +7,19 @@ https://www.npmjs.com/package/cors
 - express
 https://www.npmjs.com/package/express
 
--multer
+- multer
 https://www.npmjs.com/package/multer
 
--mysql và mysql2
+- mysql và mysql2
 https://www.npmjs.com/package/mysql
 https://www.npmjs.com/package/mysql2
 
--nodemon (dev)
+- nodemon (dev)
 https://www.npmjs.com/package/nodemon
 
--path
+- path
 https://www.npmjs.com/package/path
 
--sequelize và sequelize-cli
+- sequelize và sequelize-cli
 https://www.npmjs.com/package/sequelize
 https://www.npmjs.com/package/sequelize-cli

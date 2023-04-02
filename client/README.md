@@ -13,7 +13,7 @@ ngoài ra còn:
 https://www.npmjs.com/package/react
 (đây là web viết bằng react nên tất nhiên là có nó r)
 
--font-awesome
+- font-awesome
 https://www.npmjs.com/package/@fortawesome/fontawesome-svg-core
 https://www.npmjs.com/package/@fortawesome/free-solid-svg-icons
 https://www.npmjs.com/package/@fortawesome/free-regular-svg-icons
@@ -22,42 +22,42 @@ https://www.npmjs.com/package/@fortawesome/free-brands-svg-icons
 https://www.npmjs.com/package/@fortawesome/fontawesome-common-types
 (lấy icons)
 
--tippy.js
+- tippy.js
 https://www.npmjs.com/package/tippy.js
 (tạo tippy)
 
--material-ui (mui)
+- material-ui (mui)
 link docs: https://mui.com/material-ui/getting-started/installation/ (đọc docs cho nó lành)
 (framework)
 
--ant-design (antd) và ant-design-icons
+- ant-design (antd) và ant-design-icons
 https://www.npmjs.com/package/antd
 https://www.npmjs.com/package/@ant-design/icons
 (framework)
 
--bootstrap
+- bootstrap
 https://www.npmjs.com/package/bootstrap
 (framework)
 
--axios
+- axios
 https://www.npmjs.com/package/axios
 (điều khiển, thao tác với http request thay cho fetch)
 
--classnames (cx)
+- classnames (cx)
 https://www.npmjs.com/package/classnames
 (sử dụng để có thể gõ classname bình thường khi sử dụng css module với sass(các file đuôi.module.scss))
 
--clsx
+- clsx
 https://www.npmjs.com/package/clsx
 (điều khiển className cho các thành phần)
 
--react-router
+- react-router
 https://www.npmjs.com/package/react-router
 https://www.npmjs.com/package/react-router-dom
 link docs: https://reactrouter.com/en/main/start/tutorial
 (thiết lập router)
 
--sass
+- sass
 https://www.npmjs.com/package/sass
 (css module (css riêng cho từng module))
 
