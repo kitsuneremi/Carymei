@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import { BrowserRouter, Route, Routes, RouterProvider, createBrowserRouter, createRoutesFromElements } from 'react-router-dom'
+import { BrowserRouter, Route, Routes} from 'react-router-dom'
 import './index.css';
 import VariableProvider from './GlobalVariableStorage/Storage'
 import StudioValriableProvider from './resources/views/partials/studioSidebar/VariableStorage/Storage'
@@ -10,22 +10,7 @@ import Watch from "./resources/views/pages/watch/Watch";
 import Login from "./resources/views/pages/Login/Login";
 import Up from './resources/views/pages/Upload/Up';
 const root = ReactDOM.createRoot(document.getElementById('root'));
-
-const router = createBrowserRouter(
-  createRoutesFromElements(
-    <Route path="/" element={<Home />}></Route>
-  ),
-  createRoutesFromElements(
-    <Route path="/result" element={<Result />}></Route>
-  ),
-  createRoutesFromElements(
-    <Route path="/watch" element={<Watch />}></Route>
-  )
-
-)
-
 root.render(
-  // <RouterProvider>
     <BrowserRouter>
       <VariableProvider>
         <Routes>
@@ -37,5 +22,4 @@ root.render(
         </Routes>
       </VariableProvider>
     </BrowserRouter>
-  // </RouterProvider>
 );

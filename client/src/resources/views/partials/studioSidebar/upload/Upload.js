@@ -3,6 +3,9 @@ import axios from "axios";
 import { Button, message, Steps, theme } from 'antd';
 import Step1 from './inside/Step1'
 import Step2 from './inside/Step2'
+import Step3 from './inside/Step3';
+import Context from '../VariableStorage/Context'
+
 const steps = [
     {
         title: 'First',
@@ -14,7 +17,7 @@ const steps = [
     },
     {
         title: 'Last',
-        content: 'Last-content',
+        content: <Step3 />,
     },
 ];
 //   

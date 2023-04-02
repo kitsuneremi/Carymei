@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import axios from "axios";
 import style from '../../../../../styles/StudioSidebarUploadStep2.module.scss'
 import classNames from 'classnames/bind'
@@ -8,45 +8,35 @@ import Context from '../../VariableStorage/Context'
 
 const { TextArea } = Input;
 
-const getBase64 = (file) =>
-    new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        reader.readAsDataURL(file);
-        reader.onload = () => resolve(reader.result);
-        reader.onerror = (error) => reject(error);
-    });
-
-const Step1 = () => {
+const Step2 = () => {
     const context = useContext(Context)
     const cx = classNames.bind(style)
 
     const [loading, setLoading] = useState(false);
-    const [imageUrl, setImageUrl] = useState('');
-    const [progress, setProgress] = useState();
-    const [stage, setStage] = useState()
 
-    useEffect(() => {
-        if (stage == 'done') {
-            context.setAvatarFileLink(URL.createObjectURL(context.avatarFile))
-            console.log(imageUrl)
-            setLoading(false)
-        }
+    const videoLinkRef = useRef()
 
-    }, [stage])
+    const getFileExt = (fileName) => {
+        console.log(fileName)
+        return fileName.name.substring(fileName.name.lastIndexOf('.') + 1);
+    }
 
-    const handleChange = (info) => {
-        setStage(info.file.status)
-        if (info.file.status === 'uploading') {
-            setLoading(true);
-            return;
+    const handleSubmit = async (info) => {
+        const formData = new FormData();
+        formData.append('file', context.avatarFile, context.finalLink + '.' + getFileExt(context.avatarFile));
+        context.setAvatarFileLink(URL.createObjectURL(context.avatarFile))
+        try {
+            axios.post('http://localhost:5000/api/upload/img', formData, {
+                onUploadProgress: function (progressEvent) {
+                    console.log('Upload Progress: ' + Math.round((progressEvent.loaded / progressEvent.total) * 100) + '%');
+                    // setProgress(Math.round((progressEvent.loaded / progressEvent.total) * 100))
+                }
+            })
+                .then(res => { console.log('request done') })
+        } catch (error) {
+            console.error(error);
         }
-        if (info.file.status === 'done') {
-            // Get this url from response in real world.
-            getBase64(info.file.originFileObj, (url) => {
-                setLoading(false);
-            });
-        }
-    };
+    }
     const uploadButton = (
         <div>
             {loading ? <LoadingOutlined /> : <PlusOutlined />}
@@ -59,13 +49,26 @@ const Step1 = () => {
             </div>
         </div>
     );
+
+    async function handleCopy() {
+        try {
+          await navigator.clipboard.writeText(videoLinkRef.current.value);
+          console.log('Text copied to clipboard');
+        } catch (err) {
+          console.error('Failed to copy text: ', err);
+        }
+      }
     return (
         <>
             <div className={cx('step2')}>
                 <div className={cx('left-side')}>
                     <h2>Chi tiết</h2>
-                    <TextArea rows={4} placeholder="Tiêu đề" style={{ marginBottom: '30px' }} />
-                    <TextArea rows={4} placeholder="Mô tả" style={{ marginBottom: '30px' }} />
+                    <div>
+                        <TextArea className={cx('text-area')} placeholder="Tiêu đề" style={{ marginBottom: '30px' }} />
+                    </div>
+                    <div>
+                        <TextArea className={cx('text-area')} placeholder="Mô tả" style={{ marginBottom: '30px' }} />
+                    </div>
                     <h4>hình thu nhỏ</h4>
                     <div>
                         <Upload
@@ -74,8 +77,8 @@ const Step1 = () => {
                             className={cx('img-uploader')}
                             beforeUpload={(file) => { context.setAvatarFile(file) }}
                             showUploadList={false}
-                            action="http://localhost:5000/api/upload/img"
-                            onChange={handleChange}
+                            onChange={(info) => { handleSubmit(info) }}
+                            customRequest={() => { }}
                         >
                             {uploadButton}
                         </Upload>
@@ -94,17 +97,15 @@ const Step1 = () => {
                     </div>
                 </div>
                 <div className={cx('right-side')}>
-                    <video src="">
-
-                    </video>
+                    <video src={context.videoLink} controls className={cx('video-preview')}></video>
                     <p>đường liên kết video</p>
                     <div className={cx('video-link-box')}>
-                        <input value={context.videoLink} className={cx('video-link')} disabled />
-                        <CopyOutlined className={cx('copy-button')} />
+                        <input value={`http://localhost:3000/watch/${context.finalLink}`} className={cx('video-link')} disabled ref={videoLinkRef}/>
+                        <CopyOutlined className={cx('copy-button')} onClick={() => {handleCopy()}}/>
                     </div>
                     <div>
                         <p>tên tệp</p>
-                        <p>{ }</p>
+                        <p>{context.videoFile.name}</p>
                     </div>
 
                 </div>
@@ -114,4 +115,4 @@ const Step1 = () => {
 
 }
 
-export default Step1
+export default Step2

@@ -9,6 +9,7 @@ function VariableProvider({ children }) {
     const [step1, setStep1] = useState()
     const [step2, setStep2] = useState()
     const [step3, setStep3] = useState()
+    const [finalLink, setFinalLink] = useState()
 
     const value = {
         'videoFile': videoFile,
@@ -18,13 +19,15 @@ function VariableProvider({ children }) {
         'step1': step1,
         'step2': step2,
         'step3': step3,
+        'finalLink': finalLink,
         setVideoFile,
         setAvatarFile,
         setVideoFileLink,
         setAvatarFileLink,
         setStep1,
         setStep2,
-        setStep3
+        setStep3,
+        setFinalLink
     }
     return (
         <Context.Provider value={value}>
