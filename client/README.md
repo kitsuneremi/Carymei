@@ -1,70 +1,63 @@
-# Getting Started with Create React App
+# đây là phần client của project
+## được base trên create-react-app nên các câu lệnh chạy vẫn như thường bao gồm:
+- npm start: chạy dự án
+- npm run build: build dự án và đẩy vào thư mục build
+- npm test: test (ko hay sử dụng)
+- npm run eject: eject (khuyến cáo ko biết dùng thì đừng dùng)
+...
+ngoài ra còn:
+- npm run scss: tạm thời câu lệnh này chưa được cập nhật
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## 1 vài thư viện được sử dụng trong dự án
+- react
+https://www.npmjs.com/package/react
+(đây là web viết bằng react nên tất nhiên là có nó r)
 
-## Available Scripts
+-font-awesome
+https://www.npmjs.com/package/@fortawesome/fontawesome-svg-core
+https://www.npmjs.com/package/@fortawesome/free-solid-svg-icons
+https://www.npmjs.com/package/@fortawesome/free-regular-svg-icons
+https://www.npmjs.com/package/@fortawesome/fontawesome-free
+https://www.npmjs.com/package/@fortawesome/free-brands-svg-icons
+https://www.npmjs.com/package/@fortawesome/fontawesome-common-types
+(lấy icons)
 
-In the project directory, you can run:
+-tippy.js
+https://www.npmjs.com/package/tippy.js
+(tạo tippy)
 
-### `npm start`
+-material-ui (mui)
+link docs: https://mui.com/material-ui/getting-started/installation/ (đọc docs cho nó lành)
+(framework)
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+-ant-design (antd) và ant-design-icons
+https://www.npmjs.com/package/antd
+https://www.npmjs.com/package/@ant-design/icons
+(framework)
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+-bootstrap
+https://www.npmjs.com/package/bootstrap
+(framework)
 
-### `npm test`
+-axios
+https://www.npmjs.com/package/axios
+(điều khiển, thao tác với http request thay cho fetch)
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+-classnames (cx)
+https://www.npmjs.com/package/classnames
+(sử dụng để có thể gõ classname bình thường khi sử dụng css module với sass(các file đuôi.module.scss))
 
-### `npm run build`
+-clsx
+https://www.npmjs.com/package/clsx
+(điều khiển className cho các thành phần)
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+-react-router
+https://www.npmjs.com/package/react-router
+https://www.npmjs.com/package/react-router-dom
+link docs: https://reactrouter.com/en/main/start/tutorial
+(thiết lập router)
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+-sass
+https://www.npmjs.com/package/sass
+(css module (css riêng cho từng module))
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
