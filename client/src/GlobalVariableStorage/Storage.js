@@ -1,21 +1,18 @@
-import {  useState, useReducer } from "react";
+import { useState, useReducer } from "react";
 import Context from './Context'
 
 
-function VariableProvider ({children}){
-    
-
-
+function VariableProvider({ children }) {
     const [theme, setTheme] = useState('false')
     const [showDrawer, setShowDrawer] = useState(false);
     const [showDetailSidebar, setShowDetailSidebar] = useState(true);
-    const [searchValue,setSearchValue] = useState('');
+    const [searchValue, setSearchValue] = useState('');
 
     const setFlagShowDrawer = () => {
         setShowDrawer(!showDrawer)
     }
 
-    const setFlagDetailSidebar= () => {
+    const setFlagDetailSidebar = () => {
         setShowDetailSidebar(!showDetailSidebar)
     }
 
@@ -40,10 +37,10 @@ function VariableProvider ({children}){
     }
 
     const value = {
-        'mode' : theme,
-        'drawerstatus' : showDrawer,
-        'sidebarstatus' : showDetailSidebar,
-        'searchvalue' : searchValue,
+        'mode': theme,
+        'drawerstatus': showDrawer,
+        'sidebarstatus': showDetailSidebar,
+        'searchvalue': searchValue,
         handleSearchValue,
         handleChangeMode,
         setFlagShowDrawer,
@@ -53,7 +50,7 @@ function VariableProvider ({children}){
         setTrueShowDetailSidebar
     }
 
-    return(
+    return (
         <Context.Provider value={value}>
             {children}
         </Context.Provider>

@@ -1,11 +1,11 @@
 module.exports = (sequelize, DataType) => {
     const Like = sequelize.define("Like", {
         videoId: {
-            type: DataType.STRING,
-            allowNull: false
+            type: DataType.NUMBER,
+            allowNull: false,
         },
         accountId: {
-            type: DataType.STRING,
+            type: DataType.NUMBER,
             allowNull: false,
         },
         type: {

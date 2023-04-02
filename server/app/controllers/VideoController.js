@@ -1,5 +1,4 @@
-const Video = require('../models/Video');
-const {Model} = require('sequelize');
+const {sequelize, Video} = require('../models/index');
 
 class VideoController {
 
@@ -13,7 +12,7 @@ class VideoController {
     }
 
     async getListVideo(req, res, next) {
-        const model = await Model.findAll()
+        const model = await Video.findAll()
         res.json(model)
     }
 }

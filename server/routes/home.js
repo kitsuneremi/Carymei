@@ -3,7 +3,7 @@ const router = express.Router();
 
 const videoController = require('../app/controllers/VideoController');
 // router.get('/:slug',videoController.getVideo);
-// router.get('/', videoController.getListVideo);
+router.get('/', videoController.getListVideo);
 
 
 module.exports = router;

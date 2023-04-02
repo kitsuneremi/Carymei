@@ -1,5 +1,5 @@
-const Channel = require('../models/Channel');
-const Video = require('../models/Video');
+const Channel = require('../models/Channels');
+const Video = require('../models/Videos');
 const sql = require('mssql')
 
 async function searchx(slug, next) {

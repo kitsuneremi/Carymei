@@ -1,0 +1,43 @@
+*{
+    font-size: 1.1rem;
+}
+.step2 {
+    display: flex;
+    justify-content: space-between;
+}
+
+.video-link-box {
+    display: flex;
+    justify-content: space-between;
+
+    .video-link {
+        color: black;
+        font-size: 1.3rem;
+    }
+}
+
+.left-side {
+    width: 600px;
+    max-width: 70%;
+    padding: 2%;
+}
+
+.right-side {
+    width: 700px;
+    max-width: 30%;
+    padding: 2%;
+}
+
+.upload-button{
+    height: 45px;
+    line-height: 1.3rem;
+}
+
+.img-uploader{
+    width: 150px;
+}
+
+.img-preview{
+    width: 100%;
+    max-width: 565px;
+}

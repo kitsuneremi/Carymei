@@ -15,9 +15,11 @@ const Login = () => {
 
     return (
         <div>
-            <form action='./api/login' method='post'>
-                <input type="text" value={userName} onChange={e => setUserName(e.target.value)}></input>
-                <input type='password' value={password} onChange={e => setPassword(e.target.value) }></input>
+            <form action='./api/login' method='post'  >
+                <input type="text" value={userName} onChange={e => setUserName(e.target.value)} style={{border: '1px solid black'}}></input>
+                <br />
+                <input type='password' value={password} onChange={e => setPassword(e.target.value)} style={{border: '1px solid black'}}></input>
+                <br />
                 <input type='submit' onClick={() => {HandleLogin()}}></input>
             </form>
         </div>

@@ -3,10 +3,12 @@ import ReactDOM from 'react-dom/client';
 import { BrowserRouter, Route, Routes, RouterProvider, createBrowserRouter, createRoutesFromElements } from 'react-router-dom'
 import './index.css';
 import VariableProvider from './GlobalVariableStorage/Storage'
+import StudioValriableProvider from './resources/views/partials/studioSidebar/VariableStorage/Storage'
 import Home from './resources/views/pages/home/Home';
 import Result from "./resources/views/pages/result/Result";
 import Watch from "./resources/views/pages/watch/Watch";
 import Login from "./resources/views/pages/Login/Login";
+import Up from './resources/views/pages/Upload/Up';
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
 const router = createBrowserRouter(
@@ -24,7 +26,6 @@ const router = createBrowserRouter(
 
 root.render(
   // <RouterProvider>
-  <React.StrictMode>
     <BrowserRouter>
       <VariableProvider>
         <Routes>
@@ -32,9 +33,9 @@ root.render(
           <Route path="/result/:slug" element={<Result />}></Route>
           <Route path="/watch/:slug" element={<Watch />}></Route>
           <Route path="/login" element={<Login />}></Route>
+          <Route path="/up" element={<StudioValriableProvider><Up /></StudioValriableProvider>}></Route>
         </Routes>
       </VariableProvider>
     </BrowserRouter>
-  </React.StrictMode>
   // </RouterProvider>
 );
