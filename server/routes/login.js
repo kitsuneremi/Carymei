@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 
-const searchController = require('../app/controllers/LoginController');
-// router.get('/:slug',searchController.get);
+const loginController = require('../app/controllers/LoginController');
+router.post('/', loginController.find);
 
 module.exports = router;

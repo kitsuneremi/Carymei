@@ -4,15 +4,13 @@ import { Fragment, memo, useContext, useEffect, useRef, useState } from "react";
 import { Link, redirect, Navigate, useNavigate } from "react-router-dom";
 import NotificationMenu from "./inside/NotificationMenu";
 import AccountMenu from "./inside/AccountMenu";
-import { ArrowLeftOutlined, UnorderedListOutlined } from "@ant-design/icons";
+import { ArrowLeftOutlined, UnorderedListOutlined, CloudUploadOutlined } from "@ant-design/icons";
 import Context from '../../../../GlobalVariableStorage/Context'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCircleXmark, faSpinner, faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons'
 import Tippy from '@tippyjs/react/headless'
-import { InboxIcon, DraftsIcon } from '@mui/icons-material';
-import { Menu, Button, MenuItem, Divider, Box, List, ListItem, ListItemButton, ListItemText, ClickAwayListener } from '@mui/material'
+import { Divider, Box, List, ListItem } from '@mui/material'
 import axios from 'axios';
-import CircularProgress from '@mui/material/CircularProgress';
 function Nav() {
     const cx = classNames.bind(styles)
     const navigate = useNavigate()
@@ -23,21 +21,12 @@ function Nav() {
     const [showCollapsedSearchBox, setShowCollapsedSearchBox] = useState(false)
     const [showSearchDropdown, setShowSearchDropdown] = useState(null)
     const [searchValue, setSearchValue] = useState(context.searchvalue)
-    const [searchResultObject, setSearchResultObject] = useState({})
+    const [searchResultObject, setSearchResultObject] = useState([])
     const [showLoading, setShowLoading] = useState(false)
     const [showClear,setShowClear] = useState(false)
 
     let searchWidth;
     searchRef != undefined ? searchWidth = 400 : searchWidth = searchRef.current.offsetWidth
-
-    const [anchorEl, setAnchorEl] = useState(null);
-    const handleClick = (event) => {
-        setAnchorEl(event.currentTarget);
-    };
-    const handleClose = () => {
-        setAnchorEl(null);
-    };
-
 
     useEffect(() => {
         let windowWidth = window.innerWidth
@@ -59,8 +48,8 @@ function Nav() {
         if (context.searchvalue != '') {
             setShowLoading(true)
             axios.get(`http://localhost:5000/api/searchbar/${context.searchvalue}`)
-                .then(res => { console.log(res.data); return res})
-                .then(res => { setSearchResultObject(res.data) })
+                .then(res => { if(res.data == []){setSearchResultObject([])};return res})
+                .then(res => { setSearchResultObject(res.data);})
                 .then(() => setShowLoading(false))
         }
     }, [context.searchvalue])
@@ -68,6 +57,7 @@ function Nav() {
     useEffect(() => {
         context.handleSearchValue(searchValue)
         searchValue === '' ? setShowClear(false) : setShowClear(true)
+        handleShowSearchAdvanced()
     }, [searchValue])
 
     //để sau này thực hiện thao tác tìm kiếm
@@ -97,7 +87,18 @@ function Nav() {
         }
     }
 
-    const open = Boolean(anchorEl);
+    const handleShowSearchAdvanced = () => {
+        if(searchValue !== ''){
+            setShowSearchDropdown(true)
+        }else{
+            setShowSearchDropdown(false)
+        }
+    }
+
+    const handleSearchNavigate = (t) => {
+        navigate(t);
+    }
+
     return (
         <header className={cx('wrapper')}>
             <div className={cx('inner')}>
@@ -136,7 +137,7 @@ function Nav() {
                     visible={showSearchDropdown}
                     render={
                         attrs => (
-                            <div tabIndex='1' className={cx('search-result')} {...attrs}>
+                            <div className={cx('search-result')} {...attrs}>
                                 <Box sx={{ width: '100%', minWidth: searchRef.current.offsetWidth, bgcolor: 'azure', borderRadius: '1em' }}>
                                     <nav aria-label="main mailbox folders">
                                         <List>
@@ -151,10 +152,10 @@ function Nav() {
                                             }
                                             <Divider />
                                             {
-                                                searchResultObject.channel != undefined ? searchResultObject.channel.map((channel, index) => {
+                                                searchResultObject != [] ? searchResultObject.map((video, index) => {
                                                     return(
-                                                        <ListItem key={index}>
-                                                            <p>{channel.name}</p>
+                                                        <ListItem key={index} onClick={() => handleSearchNavigate(`/watch/${video.videoLink}`)}>
+                                                            <p>{video.title}</p>
                                                         </ListItem>
                                                     )
                                                 }) : <Fragment></Fragment>
@@ -168,7 +169,7 @@ function Nav() {
 
                     }>
                     <div className={cx('search')} ref={searchRef}>
-                        <input placeholder='search here' value={searchValue} onChange={(e) => { setSearchValue(e.target.value) }} onFocus={() => { setShowSearchDropdown(true) }} onBlur={() => { setShowSearchDropdown(false) }} />
+                        <input placeholder='search here' value={searchValue} onChange={(e) => { setSearchValue(e.target.value) }} onFocus={() => { handleShowSearchAdvanced() }} onBlur={() => { setShowSearchDropdown(false) }} />
 
                         {showClear && <button className={cx('clear')} onClick={() => { context.handleSearchValue(''); setSearchValue('') }}>
                             <FontAwesomeIcon icon={faCircleXmark} />
@@ -181,59 +182,13 @@ function Nav() {
                     </div>
                 </Tippy>
 
-                {/* <div className={cx('search')} ref={searchRef}
-
-                >
-                    <input placeholder='search here'
-                        id="search-input"
-                        aria-controls={open ? 'search-dropdown' : undefined}
-                        aria-haspopup="true"
-                        aria-expanded={open ? 'true' : undefined}
-                        onFocus={handleClick}
-                        value={searchValue}
-                        onChange={setSearchValue} />
-
-                    <button className={cx('clear')} onClick={() => { context.handleSearchValue() }}>
-                        <FontAwesomeIcon icon={faCircleXmark} />
-                    </button>
-
-                    <FontAwesomeIcon className={cx('spinner')} icon={faSpinner} />
-
-                    <button className={cx('search-btn')} onClick={() => { handleSearch() }}>
-                        <FontAwesomeIcon icon={faMagnifyingGlass} />
-                    </button>
-                    <ClickAwayListener onClickAway={handleClose}>
-                        <Menu
-                            id="search-dropdown"
-                            anchorEl={anchorEl}
-                            open={open}
-                            onClose={handleClose}
-                            MenuListProps={{
-                                'aria-labelledby': 'search-input',
-                            }}
-                            PaperProps={{
-                                style: {
-                                    width: searchWidth,
-                                },
-                            }}
-                        >
-                            <MenuItem onClick={handleClose}>Profile</MenuItem>
-                            <MenuItem onClick={handleClose}>My account</MenuItem>
-                            <MenuItem onClick={handleClose}>Logout</MenuItem>
-                        </Menu>
-                    </ClickAwayListener>
-
-                </div> */}
-
                 {/* action */}
                 <div className={cx('actions')}>
+                    <Link to={'/up'}><CloudUploadOutlined /></Link>
                     <NotificationMenu />
                     <AccountMenu />
                 </div>
-
             </div>
-
-
         </header>
     );
 }

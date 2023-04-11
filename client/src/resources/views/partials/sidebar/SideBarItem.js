@@ -1,44 +1,61 @@
 import { ListGroup } from "react-bootstrap"
 import { useState, useEffect, memo, useRef, useContext } from "react"
-import { MenuOutlined } from "@ant-design/icons";
-import { Col, Row } from "antd";
+import { Col, Row, Button, Menu } from "antd";
 import style from '../../../styles/SidebarItem.module.scss'
 import Item from './inside/SubcribebChannel'
 import Context from "../../../../GlobalVariableStorage/Context";
+import {
+  MenuOutlined,
+  AppstoreOutlined,
+  ContainerOutlined,
+  MenuFoldOutlined,
+  PieChartOutlined,
+  MailOutlined,
+  DesktopOutlined
+} from '@ant-design/icons';
+
+function getItem(label, key, icon, children, type) {
+  return {
+    key,
+    icon,
+    children,
+    label,
+    type,
+  };
+}
+
+
 function SideBarItem(props) {
   const context = useContext(Context)
-  const home = useRef()
-  const short = useRef()
+
+  const items = [
+    getItem('Trang chủ', '1', <PieChartOutlined />),
+    getItem('Shorts', '2', <DesktopOutlined />),
+    getItem('Kênh đăng ký', '3', <ContainerOutlined />),
+    getItem('Thư viện', '4', <ContainerOutlined />),
+    getItem('Video đã xem', '5', <ContainerOutlined />),
+    getItem('Xem sau', '6', <ContainerOutlined />),
+    getItem('Đoạn video của bạn', '7', <ContainerOutlined />),
+    getItem('Thêm', 'sub1', <MailOutlined />, [
+      getItem('Option 5', '8'),
+      getItem('Option 6', '9'),
+      getItem('Option 7', '10'),
+      getItem('Option 8', '11'),
+    ]),
+    getItem('kênh đăng ký', 'sub2', <AppstoreOutlined />, [
+      getItem('Option 9', '12'),
+      getItem('Option 10', '13'),
+    ]),
+  ];
   return (
-    <aside>
-      <ListGroup variant="flush">
-        <ListGroup.Item style={{ background: 'transparent' }}>
-          <Row className={`${style.sideRow}`}>
-            <Col className={`${style.iconBox}`}><MenuOutlined /></Col>
-            {props.show ? <Col className={`text-start ${style.fixText} ${style.textBox}`} >trang chủ</Col> : <></>}
-          </Row>
-          <Row className={`${style.sideRow}`}>
-            <Col className={`${style.iconBox}`}><MenuOutlined /></Col>
-            {props.show ? <Col className={`text-start ${style.fixText} ${style.textBox}`}>shorts</Col> : <></>}
-          </Row>
-          <Row className={`${style.sideRow}`}>
-            <Col className={`${style.iconBox}`}><MenuOutlined /></Col>
-            {props.show ? <Col className={`text-start ${style.fixText} ${style.textBox}`}>kênh đăng ký</Col> : <></>}
-          </Row>
-        </ListGroup.Item>
-        <ListGroup.Item style={{ background: 'transparent' }}>
-          <Item name="evondev" show={props.show} />
-          <Item name="ehe" show={props.show} />
-          <Item name="test" show={props.show} />
-          <Item name="cc" show={props.show} />
-          <Item name="cc" show={props.show} />
-          <Item name="cc" show={props.show} />
-          <Item name="cc" show={props.show} />
-          <Item name="cc" show={props.show} />
-          <Item name="cc" show={props.show} />
-        </ListGroup.Item>
-      </ListGroup>
-    </aside>
+    <Menu
+        defaultSelectedKeys={['1']}
+        defaultOpenKeys={['sub1']}
+        mode="inline"
+        theme="light"
+        inlineCollapsed={!props.show}
+        items={items}
+      />
   )
 }
 

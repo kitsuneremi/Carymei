@@ -1,17 +1,8 @@
 import { Button, ButtonGroup } from "react-bootstrap"
 import classNames from 'classnames/bind'
-import { useState, useEffect, useRef, useLayoutEffect, useContext, memo } from "react"
+import { useState, useEffect, useRef, useContext, memo } from "react"
 import { Space, Row, Col, Drawer, Collapse as AntCollapse } from "antd";
-import {
-    CloseOutlined,
-    LikeOutlined,
-    DislikeFilled,
-    ScissorOutlined,
-    ArrowRightOutlined,
-    SaveOutlined,
-    LikeFilled,
-    DislikeOutlined
-} from '@ant-design/icons';
+import { CloseOutlined, LikeOutlined, DislikeFilled, ScissorOutlined, ArrowRightOutlined, SaveOutlined, LikeFilled, DislikeOutlined } from '@ant-design/icons';
 import PropTypes from "prop-types";
 import Context from '../../../../GlobalVariableStorage/Context'
 import Item from "../../partials/sidebar/SideBarItem"
@@ -23,7 +14,7 @@ import WatchVideoCommentInput from "./inside/VideoCommentInput";
 import WatchVideoListSidebarBox from "./inside/VideoListSidebarBox";
 import Navx from "../../partials/navbar/Nav";
 import clsx from "clsx";
-import VideoDescription from "./inside/VIdeoDescription";
+import VideoDescription from "./inside/VideoDescription";
 import axios from "axios";
 function Watch() {
     const cx = classNames.bind(style)
@@ -40,8 +31,13 @@ function Watch() {
     const [video, setVideo] = useState({});
     const [play, setPlay] = useState(true);
     const [volume, setVolume] = useState(100);
-    const [fullscreen, setFullscreen] = useState(true);
-
+    const [fs, setFullscreen] = useState(false);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+    const [channelData, setChannelData] = useState(null)
+    //useRef
+    const playerRef = useRef(null);
+    const videoRef = useRef(null);
 
     //useEffect
     useEffect(() => {
@@ -81,17 +77,30 @@ function Watch() {
         }
     }, [])
 
-    useLayoutEffect(() => {
-        axios.get(`http://localhost:5000/api/video/${window.location.pathname.split('/')[2]}`)
-            .then(res => { setVideo(res.data); console.log(res.data) })
+
+    useEffect(() => {
+        let a = window.location.href
+        axios
+            .get(`http://localhost:5000/api/file/video/${a.split('/')[4]}`, { responseType: "blob" })
+            .then((res) => {
+                var binaryData = [];
+                binaryData.push(res.data);
+                setVideo(window.URL.createObjectURL(new Blob(binaryData, { type: "video/mp4" })));
+                setLoading(false);
+            })
+            .catch((err) => {
+                setError(err.message);
+                setLoading(false);
+            });
+    }, []);
+
+    useEffect(() => {
+        let a = window.location.href
+        axios.get(`http://localhost:5000/api/channel/test/${a.split('/')[4]}`)
+            .then(res => setChannelData(res.data))
     }, [])
 
-    // useEffect(() => {
-    //     window.addEventListener('')
-    // })
 
-    //useRef
-    const playerRef = useRef();
 
     //vô tổ chức
     TabPanel.propTypes = {
@@ -101,6 +110,30 @@ function Watch() {
     };
 
     //function
+    useEffect(() => {
+        const handleSpacebar = (e) => {
+            if (e.code === 'Space' && e.target.tagName !== 'INPUT') {
+                e.preventDefault();
+                e.target.value += ' ';
+                const video = playerRef.current
+                if (video.paused) {
+                    video.play()
+                    setPlay(true)
+                } else {
+                    video.pause()
+                    setPlay(false)
+                }
+            }
+        };
+
+        document.addEventListener('keydown', handleSpacebar);
+
+        return () => {
+            document.removeEventListener('keydown', handleSpacebar);
+        };
+    }, []);
+
+
     function a11yProps(index) {
         return {
             id: `simple-tab-${index}`,
@@ -147,11 +180,11 @@ function Watch() {
 
     const handleLike = () => {
         return (
-            <ButtonGroup className={style.likeButtonGroup}>
-                <Button className={style.likeButton} onClick={() => { setLike(!like); setDislike(false) }}>
+            <ButtonGroup className={cx('like-button-group')}>
+                <Button className={cx('like-button')} onClick={() => { setLike(!like); setDislike(false) }}>
                     {like ? <LikeFilled /> : <LikeOutlined />}
                 </Button>
-                <Button className={style.dislikeButton} onClick={() => { setDislike(!dislike); setLike(false) }}>
+                <Button className={cx('dislike-button')} onClick={() => { setDislike(!dislike); setLike(false) }}>
                     {dislike ? <DislikeFilled /> : <DislikeOutlined />}
                 </Button>
             </ButtonGroup>
@@ -184,24 +217,67 @@ function Watch() {
     const volumn = () => {
         if (volumn > 50) {
             return (
-                <span class="material-icons">
+                <span className="material-icons">
                     volume_up
                 </span>
             )
         } else if (volume > 0) {
             return (
-                <span class="material-icons">
+                <span className="material-icons">
                     volume_down
                 </span>
             )
         } else {
             return (
-                <span class="material-icons">
+                <span className="material-icons">
                     volume_mute
                 </span>
             )
         }
     }
+
+    const otherVideoRender = () => {
+        return (
+            <div className={`mt-3`}>
+                <Row>
+                    <Button className={`me-1`}>all</Button>
+                    <Button className={`me-1`}>new</Button>
+                    <Button>had view</Button>
+                </Row>
+                <WatchVideoSidebar />
+                <WatchVideoSidebar />
+                <WatchVideoSidebar />
+            </div>
+        )
+    }
+
+
+    async function handleCopy() {
+        try {
+            let a = window.location.href
+            await navigator.clipboard.writeText(`https://erinasaiyukii.com/watch/${a.split('/')[4]}`);
+            console.log('Text copied to clipboard');
+        } catch (err) {
+            console.error('Failed to copy text: ', err);
+        }
+    }
+
+    const handleFullScreen = () => {
+        const video = videoRef.current;
+        if(fs){
+            if (video.requestFullscreen) {
+                video.requestFullscreen();
+            } else if (video.mozRequestFullScreen) {
+                video.mozRequestFullScreen();
+            } else if (video.webkitRequestFullscreen) {
+                video.webkitRequestFullscreen();
+            } else if (video.msRequestFullscreen) {
+                video.msRequestFullscreen();
+            }
+        }else{
+            document.exitFullscreen();
+        }
+    };
 
     return (
         <div className="App" style={{ overflow: 'hidden' }}>
@@ -210,58 +286,57 @@ function Watch() {
             {/*sidebar*/}
             {thisIsDrawer()}
 
-
-
             {/*content*/}
-            {Object.keys(video).length === 0 ? <div clas>loading...</div> :
-                <Row className={`${style.mainContent}`}>
+            {Object.keys(video).length === 0 || channelData == null ? <div>loading...</div> :
+                <Row className={cx('main-content')}>
                     <Col span={maxVideoWidth} style={{ height: 'inherit' }}>
-                        <div className={cx('video-box')}>
-                            {/* <iframe id="videoplayer" className={`${style.videoPlayer}`} src={`https://www.youtube.com/embed/${video.videoId}`}
-                                onCanPlay={e => { e.currentTarget.play() }}
-                                title="YouTube video player"
-                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                                allowFullScreen
-                                ref={playerRef}
-                            >
-                            </iframe> */}
+                        <div className={cx('video-box')} ref={videoRef}>
                             <div className={cx('timeline')}>
 
                             </div>
-                            <div className={cx('video-player')}>
-                                {/* <video src={`https://www.youtube.com/embed/${video.videoId}`}
+                            <div className={cx('video-player-box')}>
+                                <video
+                                    className={cx('video-player')}
+                                    src={video}
                                     allowFullScreen
                                     ref={playerRef}
-                                ></video> */}
+                                ></video>
                             </div>
 
                             <div className={cx('control')}>
                                 <div className={cx('left-control')}>
-                                    {!play ? <span class="material-icons" onClick={() => setPlay(true)}>
-                                        play_arrow
-                                    </span> : <span class="material-icons" onClick={() => setPlay(false)}>
-                                        pause
-                                    </span>}
-                                    <span class="material-icons">
+                                    {
+                                        !play ? <span className="material-icons" onClick={() => { playerRef.current.play(); setPlay(true) }}>
+                                            play_arrow
+                                        </span> : <span className="material-icons" onClick={() => { playerRef.current.pause(); setPlay(false) }}>
+                                            pause
+                                        </span>
+                                    }
+                                    <span className="material-icons">
                                         skip_next
                                     </span>
                                     {volumn()}
                                 </div>
                                 <div className={cx('right-control')}>
-                                    <span class="material-icons">
+                                    <span className="material-icons">
                                         subtitles
                                     </span>
-                                    <span class="material-icons">
+                                    <span className="material-icons">
                                         settings
                                     </span>
-                                    {fullscreen ? <span class="material-icons" onClick={() => {setFullscreen(false)}}>fullscreen</span> :<span class="material-icons" onClick={() => {setFullscreen(true)}}>fullscreen_exit</span>}
+                                    {
+                                        !fs
+                                            ?
+                                            <span className="material-icons" onClick={() => { setFullscreen(true); handleFullScreen() }}>fs</span>
+                                            :
+                                            <span className="material-icons" onClick={() => { setFullscreen(false); handleFullScreen() }}>fs_exit</span>
+                                    }
                                 </div>
                             </div>
-
                         </div>
                         <div>
                             <Row>
-                                <h5>{video.title}</h5>
+                                <h5>{channelData.title}</h5>
                             </Row>
                             <Row style={{ justifyContent: 'space-between' }}>
                                 <Col span={10}>
@@ -270,10 +345,10 @@ function Watch() {
                                             <Avatar />
                                         </Col>
                                         <Col className="me-4">
-                                            <Row><p className="m-0">{video.channelName}</p></Row>
+                                            <Row><p className="m-0">{channelData.name}</p></Row>
                                             <Row><p className="m-0">44.5N</p></Row>
                                         </Col>
-                                        <Col className={style.subButton}>
+                                        <Col className={cx('sub-button')}>
                                             <a type="button" className={`${clsx({ [style.sub]: sub }, { [style.unsub]: !sub })}`}
                                                 onClick={() => {
                                                     handleSubscribe()
@@ -284,15 +359,15 @@ function Watch() {
                                         </Col>
                                     </Row>
                                 </Col>
-                                <Col span={14} style={{ textAlign: 'end' }} className={style.belowVideoButton}>
+                                <Col span={14} style={{ textAlign: 'end' }} className={cx('below-video-button')}>
                                     {handleLike()}
-                                    <a type="button" className={`${style.share}`}><ArrowRightOutlined />share</a>
-                                    <a type="button" className={`${style.createShort}`}><ScissorOutlined />tạo đoạn video</a>
-                                    <a type="button" className={`${style.save}`}><SaveOutlined />save</a>
+                                    <a type="button" className={cx('share')} onClick={() => { handleCopy() }}><ArrowRightOutlined />share</a>
+                                    <a type="button" className={cx('create-short')}><ScissorOutlined />tạo đoạn video</a>
+                                    <a type="button" className={cx('save')}><SaveOutlined />save</a>
                                 </Col>
                             </Row>
                         </div>
-                        <VideoDescription value={video.des}></VideoDescription>
+                        <VideoDescription value={channelData.des}></VideoDescription>
                         {
                             maxVideoWidth === 17 ?
                                 <div>
@@ -321,16 +396,7 @@ function Watch() {
                                 <WatchVideoListSidebarBox />
                             </TabPanel>
                             <TabPanel value={value} index={2}>
-                                <div className={`mt-3`}>
-                                    <Row>
-                                        <Button className={`me-1`}>all</Button>
-                                        <Button className={`me-1`}>new</Button>
-                                        <Button>had view</Button>
-                                    </Row>
-                                    <WatchVideoSidebar />
-                                    <WatchVideoSidebar />
-                                    <WatchVideoSidebar />
-                                </div>
+                                {otherVideoRender()}
                             </TabPanel>
                         </Box>
                     </Col>
@@ -339,16 +405,7 @@ function Watch() {
                         {maxVideoWidth === 17 ?
                             <>
                                 <WatchVideoListSidebarBox />
-                                <div className={`mt-3`}>
-                                    <Row>
-                                        <Button className={`me-1`}>all</Button>
-                                        <Button className={`me-1`}>new</Button>
-                                        <Button>had view</Button>
-                                    </Row>
-                                    <WatchVideoSidebar />
-                                    <WatchVideoSidebar />
-                                    <WatchVideoSidebar />
-                                </div>
+                                {otherVideoRender()}
                             </>
                             :
                             <div></div>
@@ -358,7 +415,6 @@ function Watch() {
                 </Row>
             }
         </div>
-
     );
 }
 export default memo(Watch);

@@ -8,7 +8,10 @@ const Login = () => {
 
     const HandleLogin = () => { 
         useEffect(() => {
-            axios.get('/api/login')
+            let f = new FormData();
+            f.append(userName)
+            f.append(password)
+            axios.post('/api/login', f)
             .then(res => {console.log(res.data)})
         },[])
     }

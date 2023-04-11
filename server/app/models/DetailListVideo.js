@@ -1,7 +1,7 @@
 module.exports = (sequelize, DataType) => {
     const DetailListVideos = sequelize.define("DetailListVideos", {
         videoId: {
-            type: DataType.NUMBER,
+            type: DataType.INTEGER,
             allowNull: false,
             validate: {
                 notEmpty: true,
@@ -9,7 +9,7 @@ module.exports = (sequelize, DataType) => {
             }
         },
         listId: {
-            type: DataType.NUMBER,
+            type: DataType.INTEGER,
             allowNull: false,
             validate: {
                 notEmpty: true

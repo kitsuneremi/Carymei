@@ -1,13 +1,9 @@
 module.exports = (sequelize, DataType) => {
     const Posts = sequelize.define("Posts", {
         id: {
-            type: DataType.NUMBER,
+            type: DataType.INTEGER,
             allowNull: true,
             primaryKey: true
-        },
-        channelId: {
-            type: DataType.NUMBER,
-            allowNull: false,
         },
         des: {
             type: DataType.STRING,

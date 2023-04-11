@@ -11,7 +11,7 @@
 module.exports = (sequelize, DataType) => {
     const Accounts = sequelize.define("Accounts", {
         id:{
-            type: DataType.NUMBER,
+            type: DataType.INTEGER,
             allowNull: false,
             primaryKey: true
         },
@@ -24,6 +24,20 @@ module.exports = (sequelize, DataType) => {
             }
         },
         name: {
+            type: DataType.STRING,
+            allowNull: false,
+            validate: {
+                notEmpty: true
+            }
+        },
+        username: {
+            type: DataType.STRING,
+            allowNull: false,
+            validate: {
+                notEmpty: true
+            }
+        },
+        password: {
             type: DataType.STRING,
             allowNull: false,
             validate: {

@@ -10,7 +10,7 @@
 module.exports = (sequelize, DataType) => {
     const Categories = sequelize.define("Categories", {
         id: {
-            type: DataType.NUMBER,
+            type: DataType.INTEGER,
             allowNull: false,
             validate: {
                 notEmpty: true

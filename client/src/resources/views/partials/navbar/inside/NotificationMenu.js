@@ -2,6 +2,7 @@ import { Fragment, useState } from 'react'
 import {Avatar, Menu, MenuItem, Divider, IconButton, Tooltip} from '@mui/material'
 import {Settings} from '@mui/icons-material'
 import {Row} from 'antd'
+import {NotificationOutlined} from '@ant-design/icons'
 import style from '../../../../styles/NotificationMenu.module.scss'
 import NotiItem from './NotiItem'
 
@@ -25,9 +26,7 @@ export default function AccountMenu() {
                     aria-haspopup="true"
                     aria-expanded={open ? 'true' : 'false'}
                 >
-                    <Avatar sx={{ width: 32, height: 32 }}>
-
-                    </Avatar>
+                    <NotificationOutlined />
                 </IconButton>
             </Tooltip>
             <Menu

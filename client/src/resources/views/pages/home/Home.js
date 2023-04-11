@@ -8,7 +8,9 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import style from '../../../styles/Home.module.scss'
 import Navx from "../../partials/navbar/Nav";
 import axios from "axios";
+import classNames from "classnames/bind";
 function Home() {
+  const cx = classNames.bind(style)
   //useContext
   const context = useContext(Context)
 
@@ -114,13 +116,13 @@ function Home() {
       <Navx />
 
       <Row style={{ width: "fit-content" }}>
-        <Col span={SidebarWidth} className={style.sidebar} ref={sidebarRef}>
+        <Col span={SidebarWidth} className={cx('sidebar')} ref={sidebarRef}>
           {thisIsDrawer()}
         </Col>
-        <Col span={24 - SidebarWidth} className={style.mainContent}>
-          <Row className={style.insideContent}>
+        <Col span={24 - SidebarWidth} className={cx('main-content')}>
+          <Row className={cx('inside-content')}>
             {listVideo.length == 0 ? <p>loading....</p> : listVideo.map((video, index) => 
-              <VideoItem key={index} name={video.title} channel={video.title} videoId={video.videoId} channelName={video.channelName}/>
+              <VideoItem key={index} name={video.title} channel={video.title} videoId={video.videoId} channelName={video.channelName} link={video.link}/>
             )}
           </Row>
         </Col>

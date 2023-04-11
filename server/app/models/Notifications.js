@@ -1,16 +1,12 @@
 module.exports = (sequelize, DataType) => {
     const Notifications = sequelize.define("Notifications", {
         id: {
-            type: DataType.NUMBER,
+            type: DataType.INTEGER,
             allowNull: false,
             primaryKey: true
         },
-        accountId: {
-            type: DataType.NUMBER,
-            allowNull: false
-        },
         channelId: {
-            type: DataType.NUMBER,
+            type: DataType.INTEGER,
             allowNull: false,
         },
         title: {
@@ -18,7 +14,7 @@ module.exports = (sequelize, DataType) => {
             allowNull: false
         },
         status: {
-            type: DataType.NUMBER,
+            type: DataType.INTEGER,
             allowNull: false,
             defaultValue: 0
         }

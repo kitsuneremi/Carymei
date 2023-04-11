@@ -1,7 +1,7 @@
 module.exports = (sequelize, DataType) => {
     const Comments = sequelize.define("Comments", {
         id: {
-            type: DataType.NUMBER,
+            type: DataType.INTEGER,
             allowNull: false,
             primaryKey: true
         },
@@ -9,16 +9,12 @@ module.exports = (sequelize, DataType) => {
             type: DataType.STRING,
             allowNull: false
         },
-        accountId: {
-            type: DataType.STRING,
-            allowNull: false,
-        },
         content: {
             type: DataType.STRING,
             allowNull: false
         },
         status: {
-            type: DataType.NUMBER,
+            type: DataType.INTEGER,
             allowNull: false
         }
     }

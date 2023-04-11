@@ -17,13 +17,9 @@
 module.exports = (sequelize, DataType) => {
     const Channels = sequelize.define("Channels", {
         id: {
-            type: DataType.NUMBER,
+            type: DataType.INTEGER,
             allowNull: true,
             primaryKey: true
-        },
-        accountId: {
-            type: DataType.NUMBER,
-            allowNull: false,
         },
         name: {
             type: DataType.STRING,
@@ -36,10 +32,6 @@ module.exports = (sequelize, DataType) => {
         des: {
             type: DataType.STRING,
             allowNull: true,
-        },
-        sub: {
-            type: DataType.NUMBER,
-            allowNull: false,
         }
     }
     );

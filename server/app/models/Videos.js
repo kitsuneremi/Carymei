@@ -18,32 +18,28 @@
 module.exports = (sequelize, DataType) => {
     const Videos = sequelize.define("Videos", {
         id: {
-            type: DataType.NUMBER,
-            allowNull: false,
-            primaryKey: true
-        },
-        channelId: {
-            type: DataType.NUMBER,
-            allowNull: false
+            type: DataType.INTEGER,
+            primaryKey: true,
+            autoIncrement: true
         },
         title: {
             type: DataType.STRING,
             allowNull: false,
-            validate: {
-                notEmpty: true,
-                isEmail: true
-            }
         },
         des: {
             type: DataType.STRING,
             allowNull: true,
         },
         view: {
-            type: DataType.NUMBER,
+            type: DataType.INTEGER,
             defaultValue: 0
         },
         status: {
-            type: DataType.NUMBER,
+            type: DataType.INTEGER,
+            allowNull: false,
+        },
+        link: {
+            type: DataType.STRING,
             allowNull: false,
         }
     }

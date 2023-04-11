@@ -1,33 +1,21 @@
-const Channel = require('../models/Channels');
-const Video = require('../models/Videos');
-const sql = require('mssql')
+const { Account } = require('../models/index')
+const jwt = require('jsonwebtoken')
 
-async function searchx(slug, next) {
-    
-}
+require('dotenv').config()
 
 class LoginController {
-    async search(req, res, next) {
-        if (req.params.slug != '') {
-            let r = {};
-            await Video.find({})
-                .lean()
-                .then(video => {
-                    r.video = video;
-                })
-                .catch(next)
-            await Channel.find({ slug: req.params.slug })
-                .lean()
-                .then(channel => {
-                    r.channel = channel;
-                })
-                .catch(next)
-            console.log(r)
-            res.json(r)
+    async find(req, res, next) {
+        if (req.body.username != '') {
+            const acc = await Account.findOne({ where: { username: req.body.username } })
+            if (!acc) { return res.sendStatus(401) }
+            //create jwt
+            const accessToken = jwt.sign(acc.dataValues, process.env.ACCESS_TOKEN_SECRECT)
+            res.json({ accessToken })
         }
+
     }
 
-    
+
 }
 
 module.exports = new LoginController();

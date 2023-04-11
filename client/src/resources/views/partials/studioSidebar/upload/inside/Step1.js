@@ -9,7 +9,7 @@ const {Dragger} = Upload
 const Step1 = () => {
     const context = useContext(Context)
     const cx = classNames.bind(style)
-    const [progress, setProgress] = useState()
+    const [progress, setProgress] = useState(0)
 
     useEffect(() => {
         if(context.videoFile){
@@ -20,7 +20,6 @@ const Step1 = () => {
     },[context.videoFile])
 
     const getFileExt = (fileName) => {
-        console.log(fileName)
         return fileName.name.substring(fileName.name.lastIndexOf('.') + 1);
     }
 
@@ -42,10 +41,10 @@ const Step1 = () => {
             let t = makeid()
             await context.setFinalLink(t);
             formData.append('video', context.videoFile, t + '.' + getFileExt(context.videoFile));
+            context.setVideoType(getFileExt(context.videoFile))
             try {
                 axios.post('http://localhost:5000/api/upload/video', formData, {
                     onUploadProgress: function (progressEvent) {
-                        console.log('Upload Progress: ' + Math.round((progressEvent.loaded / progressEvent.total) * 100) + '%');
                         setProgress(Math.round((progressEvent.loaded / progressEvent.total) * 100))
                     }
                 })
@@ -61,32 +60,21 @@ const Step1 = () => {
     }
 
     return (
-        <div style={{height: '400px', paddingTop: '10%'}}>
-            <h4>lựa chọn video tải lên</h4>
-            {/* <Upload
-                style={{width: '100%'}}
-                beforeUpload={(file) => { handleBeforeUpload(file) }}
-                onChange={async (info) => { handleSubmit(info) }}
-                progress={0}
-                customRequest={() => {}}
-            >
-                <Button icon={<UploadOutlined />}>Click to Upload</Button>
-            </Upload> */}
+        <div style={{height: '800px'}}>
             <Dragger
                 style={{width: '100%'}}
                 beforeUpload={(file) => { handleBeforeUpload(file) }}
                 onChange={async (info) => { handleSubmit(info) }}
-                progress={progress}
+                progress={<Progress type="line" percent={progress} />}
                 customRequest={() => {}}
                 onRemove={() => {context.setVideoFile(null)}}
             >
                 <p className="ant-upload-drag-icon">
                     <InboxOutlined />
                 </p>
-                <p className="ant-upload-text">Click or drag file to this area to upload</p>
+                <p className="ant-upload-text">lựa chọn video tải lên</p>
                 <p className="ant-upload-hint">
-                    Support for a single or bulk upload. Strictly prohibited from uploading company data or other
-                    banned files.
+                    kéo hoặc thả file video vào đây
                 </p>
             </Dragger>
         </div>

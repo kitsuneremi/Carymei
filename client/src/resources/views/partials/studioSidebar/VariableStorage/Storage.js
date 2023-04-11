@@ -10,6 +10,10 @@ function VariableProvider({ children }) {
     const [step2, setStep2] = useState()
     const [step3, setStep3] = useState()
     const [finalLink, setFinalLink] = useState()
+    const [title, setTitle] = useState('')
+    const [des, setDes] = useState('')
+    const [imgType, setImgType] = useState('')
+    const [videoType, setVideoType] = useState('')
 
     const value = {
         'videoFile': videoFile,
@@ -20,6 +24,10 @@ function VariableProvider({ children }) {
         'step2': step2,
         'step3': step3,
         'finalLink': finalLink,
+        title,
+        des,
+        imgType,
+        videoType,
         setVideoFile,
         setAvatarFile,
         setVideoFileLink,
@@ -27,7 +35,11 @@ function VariableProvider({ children }) {
         setStep1,
         setStep2,
         setStep3,
-        setFinalLink
+        setFinalLink,
+        setTitle,
+        setDes,
+        setImgType,
+        setVideoType
     }
     return (
         <Context.Provider value={value}>

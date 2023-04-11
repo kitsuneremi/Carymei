@@ -1,10 +1,9 @@
-const {sequelize, Video} = require('../models/index');
+const { sequelize, Video, Channel } = require('../models/index');
 
 class VideoController {
 
-     getVideo(req, res, next) {
+    getVideo(req, res, next) {
         Video.findOne({ videoId: req.params.slug })
-            .lean()
             .then(video => {
                 res.json(video)
             })
@@ -12,8 +11,26 @@ class VideoController {
     }
 
     async getListVideo(req, res, next) {
-        const model = await Video.findAll()
+        const model = await Video.findAll({
+            where: {
+                status: 0
+            }
+        })
+        console.log(model)
         res.json(model)
+    }
+
+    getChannelFromVideo(req, res, next) {
+        Channel.findOne({ include: {
+            model: Video,
+            where: {
+                link: req.params.slug
+            } 
+        } })
+            .then(channel => {
+                res.json(channel)
+            })
+            .catch(next)
     }
 }
 

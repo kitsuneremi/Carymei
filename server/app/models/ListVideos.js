@@ -1,12 +1,12 @@
 module.exports = (sequelize, DataType) => {
     const ListVideos = sequelize.define("ListVideos", {
         id: {
-            type:DataType.NUMBER,
+            type:DataType.INTEGER,
             allowNull: false,
             primaryKey: true
         },
         channelId: {
-            type: DataType.NUMBER,
+            type: DataType.INTEGER,
             allowNull: false,
             validate: {
                 notEmpty: true

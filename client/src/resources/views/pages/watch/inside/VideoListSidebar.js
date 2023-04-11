@@ -1,29 +1,43 @@
-import {memo} from 'react'
-import {Col, Divider, Row} from "antd";
-import {SettingOutlined} from "@ant-design/icons";
+import { memo, useState, useEffect } from 'react'
+import { Col, Divider, Row } from "antd";
+import { SettingOutlined } from "@ant-design/icons";
 import style from '../../../../styles/Watch.module.scss'
-
-function WatchVideoListSidebar(){
+import classNames from 'classnames/bind'
+import axios from 'axios'
+import { Link } from 'react-router-dom';
+function WatchVideoListSidebar(props) {
+    const cx = classNames.bind(style)
+    const [img, setImg] = useState()
+    useEffect(() => {
+        axios.get(`http://localhost:5000/api/file/image/${props.link}`, { responseType: 'blob' })
+            .then(res => {
+                var binaryData = [];
+                binaryData.push(res.data);
+                setImg(window.URL.createObjectURL(new Blob(binaryData, { type: "image/jpeg" })));
+            })
+    }, [])
     return (
-        <div className={style.listVideoDeeper}>
-            <Row className={`${style.sidebarListBox}`}>
-                <Col span={7} className={`${style.sidebarListItemCol1}`}>
-                    <img className={`${style.sidebarListImg}`} src="https://i.ytimg.com/vi/dvLDLiy_MT4/hqdefault.jpg?s…EIYAXABwAEG&rs=AOn4CLA7yWc4DE9fJFTxC6_Vu_6P9J9Z8A" />
-                </Col>
-                <Col span={16} className={`${style.sidebarListItemCol2}`}>
-                    <Row className={`${style.sidebarListTitleBox}`}>
-                        <p className={`${style.sidebarListTitle}`}>[Classical/Hardcore]</p>
-                    </Row>
-                    <Row className={`${style.sidebarListChannelnameBox}`}>
-                        <p className={`${style.sidebarListChannelname}`}>cold kiss sound</p>
-                    </Row>
-                </Col>
-                <Col span={1} className={`${style.sidebarListItemCol3}`}>
-                    <SettingOutlined />
-                </Col>
-            </Row>
-            <Divider style={{ margin: '10px 0' }} />
-        </div>
+        <Link to={`/watch/${props.link}`}>
+            <div className={cx('list-video-deeper')}>
+                <Row className={cx('sidebar-list-box')}>
+                    <Col span={7} className={cx('sidebar-list-item-col-1')}>
+                        <img className={cx('sidebar-list-img')} src={img} />
+                    </Col>
+                    <Col span={16} className={cx('sidebar-list-item-col-2')}>
+                        <Row className={cx('sidebar-list-title-box')}>
+                            <p className={cx('sidebar-list-title')}>{props.title}</p>
+                        </Row>
+                        <Row className={cx('sidebar-list-channel-name-box')}>
+                            <p className={cx('sidebar-list-channel0name')}>{props.channelName}</p>
+                        </Row>
+                    </Col>
+                    <Col span={1} className={cx('sidebar-list-item-col-3')}>
+                        <SettingOutlined />
+                    </Col>
+                </Row>
+                <Divider style={{ margin: '10px 0' }} />
+            </div>
+        </Link>
     )
 }
 
