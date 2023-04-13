@@ -3,7 +3,7 @@ const router = express.Router();
 const UpController = require('../app/controllers/UpController');
 const multer = require('multer');
 const path = require('path');
-const {verifyToken} = require('../middleware/auth')
+
 
 const VideoStorage = multer.diskStorage({
     destination: (req, file, cb) => {
@@ -31,6 +31,5 @@ router.post('/video',VideoUpload.single("video"), (req, res, next) => {
 router.post('/img',ImageUpload.single("file"), (req, res, next) => {
     res.send({name: ImageStorage._handleFile.name})
 });
-// router.post('/testx',upload.none() ,UpController.up)
 router.post('/testx', upload.none(), UpController.up)
 module.exports = router;

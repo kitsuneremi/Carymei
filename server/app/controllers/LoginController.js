@@ -6,11 +6,12 @@ require('dotenv').config()
 class LoginController {
     async find(req, res, next) {
         if (req.body.username != '') {
-            const acc = await Account.findOne({ where: { username: req.body.username } })
+            const acc = await Account.findOne({ where: { username: req.body.username, password: req.body.password } })
             if (!acc) { return res.sendStatus(401) }
             //create jwt
             const accessToken = jwt.sign(acc.dataValues, process.env.ACCESS_TOKEN_SECRECT)
-            res.json({ accessToken })
+            console.log(accessToken)
+            res.json({ 'accesstoKen': accessToken, 'username': req.body.username })
         }
 
     }

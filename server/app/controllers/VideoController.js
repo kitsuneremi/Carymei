@@ -16,7 +16,6 @@ class VideoController {
                 status: 0
             }
         })
-        console.log(model)
         res.json(model)
     }
 

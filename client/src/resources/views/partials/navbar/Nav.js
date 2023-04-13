@@ -28,6 +28,7 @@ function Nav() {
     let searchWidth;
     searchRef != undefined ? searchWidth = 400 : searchWidth = searchRef.current.offsetWidth
 
+    //dev: cái này rerender lại để thuận tiện cho responsive, bản production sẽ lược bỏ phần này nhằm tiết kiệm tài nguyên
     useEffect(() => {
         let windowWidth = window.innerWidth
         if (windowWidth < 1300) {
@@ -183,11 +184,15 @@ function Nav() {
                 </Tippy>
 
                 {/* action */}
-                <div className={cx('actions')}>
+                {localStorage.getItem('accessToken') != null ? <div className={cx('actions')}>
                     <Link to={'/up'}><CloudUploadOutlined /></Link>
                     <NotificationMenu />
                     <AccountMenu />
-                </div>
+                </div> : 
+                <Link to={'/login'}>
+                    <button className={cx('login-button')}>login</button>
+                </Link>
+                }
             </div>
         </header>
     );

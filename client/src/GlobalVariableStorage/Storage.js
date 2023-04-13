@@ -1,9 +1,9 @@
-import { useState, useReducer } from "react";
+import { useState } from "react";
 import Context from './Context'
 
 
 function VariableProvider({ children }) {
-    const [theme, setTheme] = useState('false')
+    const [theme, setTheme] = useState(true)
     const [showDrawer, setShowDrawer] = useState(false);
     const [showDetailSidebar, setShowDetailSidebar] = useState(true);
     const [searchValue, setSearchValue] = useState('');
@@ -29,6 +29,7 @@ function VariableProvider({ children }) {
     }
 
     const handleChangeMode = () => {
+        setTheme(!theme)
         theme === true ? setTheme(false) : setTheme(true)
     }
 
@@ -43,11 +44,12 @@ function VariableProvider({ children }) {
         'searchvalue': searchValue,
         handleSearchValue,
         handleChangeMode,
+        setTheme,
         setFlagShowDrawer,
         setFlagDetailSidebar,
         setFalseShowDrawer,
         setFalseDetailSidebar,
-        setTrueShowDetailSidebar
+        setTrueShowDetailSidebar,
     }
 
     return (

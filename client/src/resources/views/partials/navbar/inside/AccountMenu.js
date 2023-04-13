@@ -1,26 +1,21 @@
 import { Fragment, useContext, useState, useEffect, memo } from "react";
 import classNames from 'classnames/bind'
-import {
-    Avatar,
-    Menu,
-    MenuItem,
-    ListItemIcon,
-    Divider,
-    IconButton,
-    Tooltip,
-    Container,
-    Box
-} from '@mui/material'
+import { Avatar, Menu, MenuItem, ListItemIcon, Divider, IconButton, Container, Tooltip } from '@mui/material'
 import { PersonAdd, Settings, Logout, CheckOutlined, CloseOutlined } from '@mui/icons-material'
 import { Row, Switch } from 'antd'
 import style from '../../../../styles/AccountMenu.module.scss'
 import Context from '../../../../../GlobalVariableStorage/Context'
 import clsx from "clsx";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 function AccountMenu() {
+    const navigate = useNavigate()
     const cx = classNames.bind(style)
     const context = useContext(Context)
+    
     const [showDropdown, setShowDropdown] = useState(null);
-    const [mode, setMode] = useState(`${context.mode}`)
+    const [accountData, setAccountData] = useState(null);
+
     const open = Boolean(showDropdown);
     const handleClick = (event) => {
         setShowDropdown(event.currentTarget);
@@ -30,8 +25,13 @@ function AccountMenu() {
     };
 
     useEffect(() => {
-        context.mode === true ? setMode(true) : setMode(false)
-    }, [context.mode])
+        let session = localStorage.getItem('username')
+        if(session){
+            axios.get(`http://localhost:5000/api/account/${session}`)
+                .then(res => {setAccountData(res.data); console.log(res.data)})
+        }
+        
+    },[])
 
     return (
         <Fragment>
@@ -81,16 +81,16 @@ function AccountMenu() {
                 }}
                 transformOrigin={{ horizontal: 'right', vertical: 'top' }}
                 anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
-                className={mode ? cx('light') : cx('dark')}
+                className={context.mode ? cx('light') : cx('dark')}
             >
                 <Container style={{ padding: 0 }} className={cx('container')}>
                     <MenuItem>
                         <Row style={{ display: "flex" }}><Avatar /></Row>
-                        <Row style={{ display: "inline-block" }}>
-                            <p className={cx('text')}>Erina Saiyukii</p>
-                            <p className={cx('text')}>@saiyukii2811</p>
+                        {accountData ? <Row style={{ display: "inline-block" }}>
+                            <p className={cx('text')}>{accountData.name}</p>
+                            <p className={cx('text')}>{accountData.email}</p>
                             <a className={cx('text')}>Quản lý tài khoản google của bạn</a>
-                        </Row>
+                        </Row> : <Row>loading...</Row>}
                     </MenuItem>
                     <Divider />
                     <MenuItem>
@@ -147,14 +147,14 @@ function AccountMenu() {
                         <ListItemIcon>
                             <Logout fontSize="small" />
                         </ListItemIcon>
-                        <p className={cx('body-text')}>Chuyển đổi tài khoản</p>
+                        <p className={cx('body-text')}>cài đặt</p>
                     </MenuItem>
                     <MenuItem>
                         <ListItemIcon>
                             <Logout fontSize="small" />
                         </ListItemIcon>
-                        <p className={cx('body-text')}>
-                            Chuyển đổi tài khoản
+                        <p className={cx('body-text')} onClick={() => {localStorage.removeItem('accessToken'); navigate(0)}}>
+                            đăng xuất
                         </p>
                     </MenuItem>
                 </Container>
