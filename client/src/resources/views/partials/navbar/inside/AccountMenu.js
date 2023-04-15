@@ -12,7 +12,7 @@ function AccountMenu() {
     const navigate = useNavigate()
     const cx = classNames.bind(style)
     const context = useContext(Context)
-    
+
     const [showDropdown, setShowDropdown] = useState(null);
     const [accountData, setAccountData] = useState(null);
 
@@ -24,14 +24,50 @@ function AccountMenu() {
         setShowDropdown(null);
     };
 
+    const handleLogout = async () => {
+        const instance = axios.create({
+            baseURL: 'http://localhost:5000/api/sign/logout',
+        });
+
+        instance.interceptors.request.use(
+            async function (config) {
+                let a = localStorage.getItem('accessToken')
+                let f = new FormData();
+                f.append('refreshToken', localStorage.getItem('refreshToken'));
+                f.append('accessToken', localStorage.getItem('accessToken'));
+                f.append('username', localStorage.getItem('username'));
+                await axios.post('http://localhost:5000/api/sign/token', f)
+                    .then(res => { localStorage.setItem('accessToken', res.data.accessToken); localStorage.setItem('refreshToken', res.data.refreshToken); return res })
+                    .then(res => { config.headers.Authorization = `Bearer ${res.data.accessToken}`; })
+                let f1 = new FormData();
+                let b = localStorage.getItem('accessToken');
+                console.log(a == b)
+                f1.append('username', localStorage.getItem('username'))
+                f1.append('accessToken', localStorage.getItem('accessToken'))
+                f1.append('refreshToken', localStorage.getItem('refreshToken'))
+                config.data = f1;
+                return config;
+            },
+            function (error) {
+                // Xử lý lỗi
+                console.log(error);
+                return Promise.reject(error);
+            }
+        );
+        localStorage.removeItem('accessToken');
+        localStorage.removeItem('refreshToken');
+        localStorage.removeItem('username');
+        navigate(0)
+    }
+
     useEffect(() => {
         let session = localStorage.getItem('username')
-        if(session){
+        if (session) {
             axios.get(`http://localhost:5000/api/account/${session}`)
-                .then(res => {setAccountData(res.data); console.log(res.data)})
+                .then(res => { setAccountData(res.data);})
         }
-        
-    },[])
+
+    }, [])
 
     return (
         <Fragment>
@@ -111,31 +147,12 @@ function AccountMenu() {
                         </ListItemIcon>
                         <p className={cx('body-text')}>Chuyển đổi tài khoản</p>
                     </MenuItem>
-                    <MenuItem>
-                        <ListItemIcon>
-                            <Logout fontSize="small" />
-                        </ListItemIcon>
-                        <p className={cx('body-text')}>Chuyển đổi tài khoản</p>
-                    </MenuItem>
                     <Divider />
                     <MenuItem>
                         <ListItemIcon>
                             <Logout fontSize="small" />
                         </ListItemIcon>
-                        <p className={cx('body-text')}>Chuyển đổi tài khoản</p>
-                    </MenuItem>
-                    <MenuItem>
-                        <ListItemIcon>
-                            <Logout fontSize="small" />
-                        </ListItemIcon>
-                        <p className={cx('body-text')}>Chuyển đổi tài khoản</p>
-                    </MenuItem>
-                    <Divider />
-                    <MenuItem>
-                        <ListItemIcon>
-                            <Logout fontSize="small" />
-                        </ListItemIcon>
-                        <p className={cx('body-text')}>Chuyển đổi chế độ</p>
+                        <p className={cx('body-text')}>Chế độ sáng/tối</p>
                         <Switch style={{ marginLeft: '30px' }}
                             checkedChildren={<CheckOutlined />}
                             unCheckedChildren={<CloseOutlined />}
@@ -153,7 +170,7 @@ function AccountMenu() {
                         <ListItemIcon>
                             <Logout fontSize="small" />
                         </ListItemIcon>
-                        <p className={cx('body-text')} onClick={() => {localStorage.removeItem('accessToken'); navigate(0)}}>
+                        <p className={cx('body-text')} onClick={() => { handleLogout() }}>
                             đăng xuất
                         </p>
                     </MenuItem>

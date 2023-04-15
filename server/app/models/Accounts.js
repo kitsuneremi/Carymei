@@ -13,7 +13,8 @@ module.exports = (sequelize, DataType) => {
         id:{
             type: DataType.INTEGER,
             allowNull: false,
-            primaryKey: true
+            primaryKey: true,
+            autoIncrement: true
         },
         email: {
             type: DataType.STRING,
@@ -43,6 +44,11 @@ module.exports = (sequelize, DataType) => {
             validate: {
                 notEmpty: true
             }
+        },
+        refreshToken: {
+            type: DataType.STRING,
+            allowNull: true,
+            defaultValue: null
         }
         
     }

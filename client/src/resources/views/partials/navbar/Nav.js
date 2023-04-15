@@ -190,7 +190,7 @@ function Nav() {
                     <AccountMenu />
                 </div> : 
                 <Link to={'/login'}>
-                    <button className={cx('login-button')}>login</button>
+                    <button className={cx('login-button')}>đăng nhập</button>
                 </Link>
                 }
             </div>
