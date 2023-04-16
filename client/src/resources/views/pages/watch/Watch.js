@@ -35,6 +35,7 @@ function Watch() {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [channelData, setChannelData] = useState(null)
+    const [selectedTab, setSelectedTab] = useState(1)
     //useRef
     const playerRef = useRef(null);
     const videoRef = useRef(null);
@@ -100,16 +101,6 @@ function Watch() {
             .then(res => setChannelData(res.data))
     }, [])
 
-
-
-    //vô tổ chức
-    TabPanel.propTypes = {
-        children: PropTypes.node,
-        index: PropTypes.number.isRequired,
-        value: PropTypes.number.isRequired,
-    };
-
-    //function
     useEffect(() => {
         const handleSpacebar = (e) => {
             if (e.code === 'Space' && e.target.tagName !== 'INPUT') {
@@ -132,6 +123,18 @@ function Watch() {
             document.removeEventListener('keydown', handleSpacebar);
         };
     }, []);
+
+
+
+    //vô tổ chức
+    TabPanel.propTypes = {
+        children: PropTypes.node,
+        index: PropTypes.number.isRequired,
+        value: PropTypes.number.isRequired,
+    };
+
+    //function
+
 
 
     function a11yProps(index) {
@@ -237,19 +240,44 @@ function Watch() {
     }
 
     const otherVideoRender = () => {
+        const viewTab = () => {
+            if(selectedTab === 1){
+                return <WatchVideoSidebar />
+            }else if(selectedTab === 2){
+                return <WatchVideoSidebar />
+            }else{
+                return <WatchVideoSidebar />
+            }
+        }
+        const btn = [
+            {
+                'title': 'tất cả',
+            },
+            {
+                'title': 'mới',
+            },
+            {
+                'title': 'đã xem',
+            }
+        ]
         return (
-            <div className={`mt-3`}>
-                <Row>
-                    <Button className={`me-1`}>all</Button>
-                    <Button className={`me-1`}>new</Button>
-                    <Button>had view</Button>
-                </Row>
-                <WatchVideoSidebar />
-                <WatchVideoSidebar />
-                <WatchVideoSidebar />
+            <div className={cx('sidebar-below')}>
+                <div className={cx('top-housing')}>
+                    {btn.map((btn, index) => {
+                        return (
+                            <button className={
+                                clsx({[cx('tab-button')]: (selectedTab !== index)},{[cx('selected-tab-button')]: (selectedTab === index)})
+                            } onClick={() => { setSelectedTab(index) }}>{btn.title}</button>
+                        )
+                    })}
+                </div>
+                <div className={cx('bottom-housing')}>
+                    {viewTab()}
+                </div>
             </div>
         )
     }
+
 
 
     async function handleCopy() {
@@ -264,7 +292,7 @@ function Watch() {
 
     const handleFullScreen = () => {
         const video = videoRef.current;
-        if(fs){
+        if (fs) {
             if (video.requestFullscreen) {
                 video.requestFullscreen();
             } else if (video.mozRequestFullScreen) {
@@ -274,7 +302,7 @@ function Watch() {
             } else if (video.msRequestFullscreen) {
                 video.msRequestFullscreen();
             }
-        }else{
+        } else {
             document.exitFullscreen();
         }
     };
@@ -299,6 +327,7 @@ function Watch() {
                                     className={cx('video-player')}
                                     src={video}
                                     allowFullScreen
+                                    autoPlay
                                     ref={playerRef}
                                 ></video>
                             </div>

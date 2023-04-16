@@ -5,6 +5,7 @@ const verifyToken = require('../middleware/auth')
 
 const x = multer()
 const SignController = require('../app/controllers/SignController');
+
 router.post('/signin', x.none(), SignController.find);
 router.post('/register', x.none(), SignController.register);
 router.post('/token', x.none(), SignController.token);

@@ -6,7 +6,7 @@ require('dotenv').config()
 const handlejwt = payload => {
     //create jwt
     const accessToken = jwt.sign(payload, process.env.ACCESS_TOKEN_SECRECT, {
-        expiresIn: '30s'
+        expiresIn: '300s'
     })
     const refreshToken = jwt.sign(payload, process.env.REFRESH_TOKEN_SECRECT, {
         expiresIn: '31536000s'
