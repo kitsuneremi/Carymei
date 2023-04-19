@@ -1,5 +1,4 @@
-import { Col, Row } from "antd";
-import { MoreOutlined, CloseOutlined } from "@ant-design/icons";
+import { CloseOutlined } from "@ant-design/icons";
 import Item from "./ListSideBarItem";
 import { memo, useState, useEffect } from 'react'
 import style from '../../../../styles/VideoListSidebarBox.module.scss'
@@ -9,16 +8,8 @@ import classNames from 'classnames/bind'
 
 function WatchVideoListSidebarBox() {
     const cx = classNames.bind(style)
-    const [showSidebarLine, setShowSidebarLine] = useState(true)
     const [openListBox, setOpenListBox] = useState(true)
     const [listVideo, setListVideo] = useState(null)
-
-    useEffect(() => {
-        window.addEventListener('resize', setShowSidebarLine(false))
-        return () => {
-            window.removeEventListener('resize', setShowSidebarLine(false))
-        }
-    }, [])
 
     useEffect(() => {
         axios.get('http://localhost:5000/api/video')

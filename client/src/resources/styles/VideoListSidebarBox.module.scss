@@ -6,15 +6,17 @@
     .top-housing{
         display: flex;
         position: relative;
-        padding: 3% 0 8% 0;
+        padding: 10px 0 35px 0;
         background-color: rgb(180, 181, 182);
         border-top-right-radius: 9px;
         border-top-left-radius: 9px;
         background-clip: padding-box;
+        height: fit-content;
         .top-left{
             vertical-align: middle;
             position: absolute;
             left: 5%;
+            height: fit-content;
         }
 
         .top-right{
@@ -48,18 +50,22 @@
     padding: 5%;
     .thumbnail{
         width: 180px;
+        max-width: 60%;
         max-height: 100%;
     }
     div{
         display: block;
         position: relative;
         margin-left: 5%;
+        width: 400px;
+        max-width: 40%;
         .video-title{
             position: absolute;
             top: 0;
             font-size: 1.2em;
             font-weight: 650;
-            max-width: 250px;
+            width: 200px;
+            max-width: 100%;
             max-height: 65px;
             overflow-y: scroll;
         }

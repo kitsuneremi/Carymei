@@ -2,8 +2,8 @@ import { useEffect, useState, useContext } from "react";
 import axios from "axios";
 import style from '../../../../../styles/StudioSidebarUploadStep1.module.scss'
 import classNames from 'classnames/bind'
-import { UploadOutlined,InboxOutlined } from '@ant-design/icons';
-import { Button, message, Upload, Progress } from 'antd';
+import { InboxOutlined } from '@ant-design/icons';
+import { Upload, Progress } from 'antd';
 import Context from '../../VariableStorage/Context'
 const {Dragger} = Upload
 const Step1 = () => {

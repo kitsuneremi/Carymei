@@ -17,10 +17,7 @@ const Step3 = () => {
         formData.append('view', 0);
         formData.append('status', 0);
         formData.append('link', context.finalLink);
-        fetch('http://localhost:5000/api/upload/testx', {
-            method: 'POST',
-            body: formData
-        })
+        axios.post('http://localhost:5000/api/upload/testx',formData)
             .then(data => console.log(data))
             .catch(error => console.error(error))
     }

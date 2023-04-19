@@ -1,13 +1,12 @@
 import { Button, ButtonGroup } from "react-bootstrap"
-import classNames from 'classnames/bind'
-import { useState, useEffect, useRef, useContext, memo } from "react"
+import { Avatar, Box, Typography } from "@mui/material";
+import { useState, useEffect, useRef, useContext, memo, useLayoutEffect } from "react"
 import { Space, Row, Col, Drawer, Collapse as AntCollapse } from "antd";
-import { CloseOutlined, LikeOutlined, DislikeFilled, ScissorOutlined, ArrowRightOutlined, SaveOutlined, LikeFilled, DislikeOutlined } from '@ant-design/icons';
+import { CloseOutlined, LikeOutlined, DislikeFilled, ScissorOutlined, ArrowRightOutlined, SaveOutlined, LikeFilled, DislikeOutlined, FullscreenOutlined, FullscreenExitOutlined } from '@ant-design/icons';
 import PropTypes from "prop-types";
 import Context from '../../../../GlobalVariableStorage/Context'
 import Item from "../../partials/sidebar/SideBarItem"
 import style from '../../../styles/Watch.module.scss';
-import { Avatar, Box, Tab, Tabs, Typography } from "@mui/material";
 import WatchVideoSidebar from "./inside/VideoSidebar";
 import WatchVideoComment from "./inside/VideoComment";
 import WatchVideoCommentInput from "./inside/VideoCommentInput";
@@ -16,6 +15,7 @@ import Navx from "../../partials/navbar/Nav";
 import clsx from "clsx";
 import VideoDescription from "./inside/VideoDescription";
 import axios from "axios";
+import classNames from 'classnames/bind'
 function Watch() {
     const cx = classNames.bind(style)
     //useContext
@@ -30,12 +30,13 @@ function Watch() {
     const [sub, SetSub] = useState(false);
     const [video, setVideo] = useState({});
     const [play, setPlay] = useState(true);
-    const [volume, setVolume] = useState(100);
     const [fs, setFullscreen] = useState(false);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [channelData, setChannelData] = useState(null)
-    const [selectedTab, setSelectedTab] = useState(1)
+    const [selectedTab, setSelectedTab] = useState(0)
+    const [selectedBelowTab, setSelectedBelowTab] = useState(0)
+    const [volume, setVolume] = useState(1)
     //useRef
     const playerRef = useRef(null);
     const videoRef = useRef(null);
@@ -124,7 +125,10 @@ function Watch() {
         };
     }, []);
 
-
+    useLayoutEffect(() => {
+        if (playerRef.current == null) return;
+        playerRef.current.volume = volume
+    }, [volume])
 
     //vô tổ chức
     TabPanel.propTypes = {
@@ -217,35 +221,37 @@ function Watch() {
         SetSub(!sub)
     }
 
-    const volumn = () => {
-        if (volumn > 50) {
+    const volumex = () => {
+        if (volume > 0.5) {
             return (
-                <span className="material-icons">
+                <span className="material-icons" style={controlStyle}>
                     volume_up
                 </span>
+
             )
         } else if (volume > 0) {
             return (
-                <span className="material-icons">
+                <span className="material-icons" style={controlStyle}>
                     volume_down
                 </span>
             )
         } else {
             return (
-                <span className="material-icons">
+                <span className="material-icons" style={controlStyle}>
                     volume_mute
                 </span>
             )
         }
     }
 
+
     const otherVideoRender = () => {
         const viewTab = () => {
-            if(selectedTab === 1){
+            if (selectedTab === 0) {
                 return <WatchVideoSidebar />
-            }else if(selectedTab === 2){
+            } else if (selectedTab === 1) {
                 return <WatchVideoSidebar />
-            }else{
+            } else {
                 return <WatchVideoSidebar />
             }
         }
@@ -265,9 +271,52 @@ function Watch() {
                 <div className={cx('top-housing')}>
                     {btn.map((btn, index) => {
                         return (
-                            <button className={
-                                clsx({[cx('tab-button')]: (selectedTab !== index)},{[cx('selected-tab-button')]: (selectedTab === index)})
+                            <button key={index} className={
+                                clsx({ [cx('tab-button')]: (selectedTab !== index) }, { [cx('selected-tab-button')]: (selectedTab === index) })
                             } onClick={() => { setSelectedTab(index) }}>{btn.title}</button>
+                        )
+                    })}
+                </div>
+                <div className={cx('bottom-housing')}>
+                    {viewTab()}
+                </div>
+            </div>
+        )
+    }
+
+    const belowRender = () => {
+        const viewTab = () => {
+            if (selectedBelowTab === 0) {
+                return <>
+                    <WatchVideoCommentInput />
+                    <WatchVideoComment />
+                </>
+            } else if (selectedBelowTab === 1) {
+                return <WatchVideoListSidebarBox />
+            } else {
+                let p = otherVideoRender()
+                return p
+            }
+        }
+        const btn = [
+            {
+                'title': 'bình luận',
+            },
+            {
+                'title': 'danh sách phát',
+            },
+            {
+                'title': 'video khác',
+            }
+        ]
+        return (
+            <div className={cx('sidebar-below')}>
+                <div className={cx('top-housing')}>
+                    {btn.map((btn, index) => {
+                        return (
+                            <button key={index} className={
+                                clsx({ [cx('tab-button')]: (selectedBelowTab !== index) }, { [cx('selected-tab-button')]: (selectedBelowTab === index) })
+                            } onClick={() => { setSelectedBelowTab(index) }}>{btn.title}</button>
                         )
                     })}
                 </div>
@@ -307,6 +356,11 @@ function Watch() {
         }
     };
 
+    const controlStyle = {
+        'color': 'aliceblue',
+        'fontSize': '2.2em',
+    }
+
     return (
         <div className="App" style={{ overflow: 'hidden' }}>
             <Navx />
@@ -335,30 +389,40 @@ function Watch() {
                             <div className={cx('control')}>
                                 <div className={cx('left-control')}>
                                     {
-                                        !play ? <span className="material-icons" onClick={() => { playerRef.current.play(); setPlay(true) }}>
+                                        !play ? <span className="material-icons" style={controlStyle} onClick={() => { playerRef.current.play(); setPlay(true) }}>
                                             play_arrow
-                                        </span> : <span className="material-icons" onClick={() => { playerRef.current.pause(); setPlay(false) }}>
+                                        </span> : <span className="material-icons" style={controlStyle} onClick={() => { playerRef.current.pause(); setPlay(false) }}>
                                             pause
                                         </span>
                                     }
-                                    <span className="material-icons">
+                                    <span className="material-icons" style={controlStyle}>
                                         skip_next
                                     </span>
-                                    {volumn()}
+                                    <>
+                                        {playerRef.current == null ? <span className="material-icons" style={controlStyle}>volume_up</span> : volumex()}
+                                        <input
+                                            type="range"
+                                            min="0"
+                                            max="1"
+                                            step="0.01"
+                                            onChange={(e) => { setVolume(e.target.value) }}
+                                            defaultValue="1"
+                                        />
+                                    </>
                                 </div>
                                 <div className={cx('right-control')}>
-                                    <span className="material-icons">
+                                    <span className="material-icons" style={controlStyle}>
                                         subtitles
                                     </span>
-                                    <span className="material-icons">
+                                    <span className="material-icons" style={controlStyle}>
                                         settings
                                     </span>
                                     {
                                         !fs
                                             ?
-                                            <span className="material-icons" onClick={() => { setFullscreen(true); handleFullScreen() }}>fs</span>
+                                            <div onClick={() => { setFullscreen(true); handleFullScreen() }}><FullscreenExitOutlined style={controlStyle} /></div>
                                             :
-                                            <span className="material-icons" onClick={() => { setFullscreen(false); handleFullScreen() }}>fs_exit</span>
+                                            <div onClick={() => { setFullscreen(false); handleFullScreen() }}><FullscreenOutlined style={controlStyle} /></div>
                                     }
                                 </div>
                             </div>
@@ -406,28 +470,12 @@ function Watch() {
                                 :
                                 <div></div>
                         }
-                        <Box sx={{ width: '100%' }} className={clsx(
+                        <div className={clsx(
                             { [style.true]: watchDpHandler },
                             { [style.false]: !watchDpHandler }
                         )}>
-                            <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-                                <Tabs value={value} onChange={handleChange}>
-                                    <Tab label="Bình luận" {...a11yProps(0)} />
-                                    <Tab label="Danh sách phát kết hợp" {...a11yProps(1)} />
-                                    <Tab label="Video khác" {...a11yProps(2)} />
-                                </Tabs>
-                            </Box>
-                            <TabPanel value={value} index={0}>
-                                <WatchVideoCommentInput />
-                                <WatchVideoComment />
-                            </TabPanel>
-                            <TabPanel value={value} index={1}>
-                                <WatchVideoListSidebarBox />
-                            </TabPanel>
-                            <TabPanel value={value} index={2}>
-                                {otherVideoRender()}
-                            </TabPanel>
-                        </Box>
+                            {belowRender()}
+                        </div>
                     </Col>
                     <Col span={maxVideoWidth === 17 ? 1 : 0}></Col>
                     <Col span={maxVideoWidth === 17 ? 6 : 0} style={{ height: 'inherit' }}>

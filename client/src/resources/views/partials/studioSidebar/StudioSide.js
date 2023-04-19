@@ -1,16 +1,15 @@
-import React, { useEffect, useState, useContext, useRef } from "react";
+import React, { useState, useContext, useRef } from "react";
 import { Layout, Menu } from "antd";
-import Upload from './upload/Upload'
-import Context from "../../../../GlobalVariableStorage/Context";
 import {
-  AppstoreOutlined,
   ContainerOutlined,
-  MenuFoldOutlined,
   PieChartOutlined,
   DesktopOutlined,
-  MailOutlined
 } from '@ant-design/icons';
-const { Header, Sider, Content } = Layout;
+import Upload from './upload/Upload'
+import Manager from './videoManage/manager'
+import Context from "../../../../GlobalVariableStorage/Context";
+const { Sider, Content } = Layout;
+
 
 
 function getItem(label, key, icon, children, type) {
@@ -36,7 +35,7 @@ function StudioSide() {
     if (thisLayout == 1) {
       return <Upload></Upload>
     } else if (thisLayout == 2) {
-      return <h1>content</h1>
+      return <Manager></Manager>
     } else {
       return <h1>ok</h1>
     }

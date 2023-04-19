@@ -7,8 +7,8 @@ import StudioValriableProvider from './resources/views/partials/studioSidebar/Va
 import Home from './resources/views/pages/home/Home';
 import Result from "./resources/views/pages/result/Result";
 import Watch from "./resources/views/pages/watch/Watch";
-import Login from "./resources/views/pages/Login/Login";
-import Up from './resources/views/pages/Upload/Up';
+import Login from "./resources/views/pages/login/Login";
+import Up from './resources/views/pages/upload/Up';
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
     <BrowserRouter>

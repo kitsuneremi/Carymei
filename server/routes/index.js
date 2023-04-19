@@ -11,7 +11,7 @@ function route(app) {
     app.use('/api/video', homeRouter);
     app.use('/api/searchbar', searchRouter);
     app.use('/api/sign', signRouter);
-    app.use('/api/upload', verifyToken, UpRouter);
+    app.use('/api/upload', UpRouter);
     app.use('/api/file', fileRouter);
     app.use('/api/channel', channelRouter);
     app.use('/api/account', accountRouter);

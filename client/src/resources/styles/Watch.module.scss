@@ -3,6 +3,15 @@
     --test: 0
 }
 
+input[type="range"]::-webkit-slider-runnable-track {
+    background-color: rgba(255, 255, 255, 0);
+}
+
+
+input[type='range']{
+    padding-bottom: 11px;
+}
+
 .main-content {
     width: inherit;
     top: 80px;
@@ -148,10 +157,22 @@
     border-radius: 1em;
     padding: 8px;
     margin-top: 8px;
+    position: relative;
+    padding-bottom: 10px;
+    max-height: fit-content;
+    .des-text{
+
+    }
+
+    .des-btn{
+        position: absolute;
+        left: 20px;
+        bottom: -5px;
+    }
 }
 
 .true {
-    display: block;
+    width: 100%;
 }
 
 .false {
@@ -191,6 +212,11 @@ h5 {
     position: relative;
 }
 
+.right-control {
+    display: flex;
+
+}
+
 .control {
     position: absolute;
     width: 100%;
@@ -201,6 +227,7 @@ h5 {
     opacity: 0;
     transition: opacity 175ms ease-in-out;
     cursor: pointer;
+    user-select: none;
 }
 
 
@@ -220,23 +247,26 @@ h5 {
     opacity: 1;
 }
 
-.sidebar-below{
+.sidebar-below {
     margin-top: 4%;
-    .top-housing{
+    width: 100%;
+    .top-housing {
+        width: 100%;
         display: flex;
         justify-content: space-between;
-        .tab-button{
+
+        .tab-button {
             font-size: 1.6em;
         }
 
-        .selected-tab-button{
+        .selected-tab-button {
             font-size: 1.6em;
             border-bottom: 1px solid aqua;
         }
-        
+
     }
 
-    .bottom-housing{
-
+    .bottom-housing {
+        width: 100%;
     }
 }

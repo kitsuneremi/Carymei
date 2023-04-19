@@ -1,9 +1,9 @@
-import { useContext, useEffect, useRef, useState } from "react";
+import { useContext, useRef, useState } from "react";
 import axios from "axios";
 import style from '../../../../../styles/StudioSidebarUploadStep2.module.scss'
 import classNames from 'classnames/bind'
-import { UploadOutlined, PlusOutlined, CopyOutlined, LoadingOutlined } from '@ant-design/icons';
-import { Button, message, Upload, Progress, Modal, Input, Row, Col } from 'antd';
+import { PlusOutlined, CopyOutlined, LoadingOutlined } from '@ant-design/icons';
+import { Upload, Input } from 'antd';
 import Context from '../../VariableStorage/Context'
 
 const { TextArea } = Input;
