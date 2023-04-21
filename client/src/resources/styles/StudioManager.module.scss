@@ -1,5 +1,4 @@
 .tab-box {
-
     .selected-tab-button {
         color: aqua;
         margin-right: 15px;
@@ -35,5 +34,62 @@
         font-size: 16px;
         font-weight: bold;
         cursor: pointer;
+    }
+}
+
+.select-menu{
+    background-color: rgba(51, 53, 52, 0.774);
+    height: 80px;
+    display: flex;
+    justify-content: space-between;
+    padding: 12px 30px;
+
+    div{
+        display: flex;
+        .ver-div{
+            margin: 0;
+            padding-top: 17px;
+            position: relative;
+            border: none;
+            background-color: transparent;
+            text-decoration: none;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            padding-right: 10px;
+        }
+
+        .ver-div::after{
+            content: "";
+            position: absolute;
+            top: 50%;
+            right: 0;
+            width: 1px;
+            height: 100%;
+            background-color: #525050;
+            transform: translateY(-50%);
+        }
+
+        button{
+            margin-left: 20px;
+        }
+    }
+}
+
+table{
+    width: 100%;
+    .table-body{
+        overflow-y: scroll;
+        scroll-behavior: smooth;
+        max-height: 400px;
+    
+        .item{
+            max-height: 80px;
+            td{
+                .thumbnail{
+                    max-width: 100px;
+                }
+            }
+        }
     }
 }

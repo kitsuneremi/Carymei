@@ -5,7 +5,8 @@ const UpRouter = require('./up.js');
 const fileRouter = require('./file.js');
 const channelRouter = require('./channel.js');
 const accountRouter = require('./account.js');
-const verifyToken = require('../middleware/auth')
+const studioRouter = require('./studio.js');
+// const verifyToken = require('../middleware/auth')
 
 function route(app) {
     app.use('/api/video', homeRouter);
@@ -15,6 +16,7 @@ function route(app) {
     app.use('/api/file', fileRouter);
     app.use('/api/channel', channelRouter);
     app.use('/api/account', accountRouter);
+    app.use('/api/studio', studioRouter);
 }
 
 module.exports = route;

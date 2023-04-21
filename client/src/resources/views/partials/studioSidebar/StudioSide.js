@@ -1,16 +1,15 @@
-import React, { useState, useContext, useRef } from "react";
+import { useState, useContext, useRef, useEffect } from "react";
 import { Layout, Menu } from "antd";
 import {
   ContainerOutlined,
   PieChartOutlined,
   DesktopOutlined,
 } from '@ant-design/icons';
+import { useLocation, useParams } from 'react-router-dom';
 import Upload from './upload/Upload'
 import Manager from './videoManage/manager'
 import Context from "../../../../GlobalVariableStorage/Context";
 const { Sider, Content } = Layout;
-
-
 
 function getItem(label, key, icon, children, type) {
   return {
@@ -28,8 +27,9 @@ const items = [
 ];
 
 function StudioSide() {
+  const { slug } = useParams();
   const context = useContext(Context)
-  const [thisLayout, setThisLayout] = useState(1);
+  const [thisLayout, setThisLayout] = useState( slug ? slug : 1);
 
   const content = () => {
     if (thisLayout == 1) {
@@ -51,7 +51,7 @@ function StudioSide() {
     <Layout style={{ background: 'none' }}>
       <Sider trigger={null} collapsible collapsed={context.sidebarstatus} style={{ background: 'none' }}>
         <Menu
-          defaultSelectedKeys={['1']}
+          defaultSelectedKeys={[thisLayout]}
           defaultOpenKeys={['sub1']}
           mode="inline"
           items={items}

@@ -19,6 +19,7 @@ root.render(
           <Route path="/watch/:slug" element={<Watch />}></Route>
           <Route path="/login" element={<Login />}></Route>
           <Route path="/up" element={<StudioValriableProvider><Up /></StudioValriableProvider>}></Route>
+          <Route path="/up/:slug" element={<StudioValriableProvider><Up/></StudioValriableProvider>}></Route>
         </Routes>
       </VariableProvider>
     </BrowserRouter>

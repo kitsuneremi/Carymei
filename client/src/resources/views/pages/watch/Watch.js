@@ -2,6 +2,7 @@ import { Button, ButtonGroup } from "react-bootstrap"
 import { Avatar, Box, Typography } from "@mui/material";
 import { useState, useEffect, useRef, useContext, memo, useLayoutEffect } from "react"
 import { Space, Row, Col, Drawer, Collapse as AntCollapse } from "antd";
+import { useLocation, useParams } from 'react-router-dom';
 import { CloseOutlined, LikeOutlined, DislikeFilled, ScissorOutlined, ArrowRightOutlined, SaveOutlined, LikeFilled, DislikeOutlined, FullscreenOutlined, FullscreenExitOutlined } from '@ant-design/icons';
 import PropTypes from "prop-types";
 import Context from '../../../../GlobalVariableStorage/Context'
@@ -17,6 +18,7 @@ import VideoDescription from "./inside/VideoDescription";
 import axios from "axios";
 import classNames from 'classnames/bind'
 function Watch() {
+    const { slug } = useParams();
     const cx = classNames.bind(style)
     //useContext
     const context = useContext(Context)
@@ -42,6 +44,22 @@ function Watch() {
     const videoRef = useRef(null);
 
     //useEffect
+    useEffect(() => {
+        axios.get(`http://localhost:5000/api/file/video/${slug}`, { responseType: "blob" })
+            .then((res) => {
+                var binaryData = [];
+                binaryData.push(res.data);
+                setVideo(window.URL.createObjectURL(new Blob(binaryData, { type: "video/mp4" })));
+                setLoading(false);
+            })
+            .catch((err) => {
+                setError(err.message);
+                setLoading(false);
+            });
+        axios.get(`http://localhost:5000/api/channel/test/${slug}`)
+            .then(res => setChannelData(res.data))
+    }, [slug])
+
     useEffect(() => {
         const handleCollapse = () => {
             context.setFalseShowDrawer()
@@ -79,29 +97,6 @@ function Watch() {
         }
     }, [])
 
-
-    useEffect(() => {
-        let a = window.location.href
-        axios
-            .get(`http://localhost:5000/api/file/video/${a.split('/')[4]}`, { responseType: "blob" })
-            .then((res) => {
-                var binaryData = [];
-                binaryData.push(res.data);
-                setVideo(window.URL.createObjectURL(new Blob(binaryData, { type: "video/mp4" })));
-                setLoading(false);
-            })
-            .catch((err) => {
-                setError(err.message);
-                setLoading(false);
-            });
-    }, []);
-
-    useEffect(() => {
-        let a = window.location.href
-        axios.get(`http://localhost:5000/api/channel/test/${a.split('/')[4]}`)
-            .then(res => setChannelData(res.data))
-    }, [])
-
     useEffect(() => {
         const handleSpacebar = (e) => {
             if (e.code === 'Space' && e.target.tagName !== 'INPUT') {
@@ -129,24 +124,6 @@ function Watch() {
         if (playerRef.current == null) return;
         playerRef.current.volume = volume
     }, [volume])
-
-    //vô tổ chức
-    TabPanel.propTypes = {
-        children: PropTypes.node,
-        index: PropTypes.number.isRequired,
-        value: PropTypes.number.isRequired,
-    };
-
-    //function
-
-
-
-    function a11yProps(index) {
-        return {
-            id: `simple-tab-${index}`,
-            'aria-controls': `simple-tabpanel-${index}`,
-        };
-    }
 
     const thisIsDrawer = () => {
         if (context.drawerstatus) {
@@ -181,10 +158,6 @@ function Watch() {
         }
     }
 
-    const handleChange = (event, newValue) => {
-        setValue(newValue);
-    };
-
     const handleLike = () => {
         return (
             <ButtonGroup className={cx('like-button-group')}>
@@ -196,25 +169,6 @@ function Watch() {
                 </Button>
             </ButtonGroup>
         )
-    }
-    function TabPanel(props) {
-        const { children, value, index, ...other } = props;
-
-        return (
-            <div
-                role="tabpanel"
-                hidden={value !== index}
-                id={`simple-tabpanel-${index}`}
-                aria-labelledby={`simple-tab-${index}`}
-                {...other}
-            >
-                {value === index && (
-                    <Box sx={{ p: 3 }}>
-                        <Typography>{children}</Typography>
-                    </Box>
-                )}
-            </div>
-        );
     }
 
     const handleSubscribe = () => {
@@ -243,7 +197,6 @@ function Watch() {
             )
         }
     }
-
 
     const otherVideoRender = () => {
         const viewTab = () => {
